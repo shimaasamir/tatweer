@@ -45,7 +45,7 @@ function DataTableEntry() {
                 },
                 complete: function (httpObj, textStatus) {
                     if (httpObj.status == 401) {
-                        window.location.href = '/logout';
+                        window.location.href = '/login.html';
                     }
                 },
                 dataFilter: function (data) {
@@ -145,7 +145,7 @@ function DataTableEntry() {
             },
             complete: function (httpObj, textStatus) {
                 if (httpObj.status == 401) {
-                    window.location.href = '/logout';
+                    window.location.href = '/login.html';
                 }
             },
             dataFilter: function (data) {
