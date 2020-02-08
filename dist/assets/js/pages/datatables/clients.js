@@ -4,6 +4,9 @@
 var clientsDT = function () {
 	// Private functions
 	var token = $.cookie("access_token");
+	var _dt = new DataTableEntry(),
+		datatable, _status = 0,
+		_sId;
 	var arrows;
 	if (KTUtil.isRTL()) {
 		arrows = {
@@ -46,120 +49,53 @@ var clientsDT = function () {
 	// basic demo
 	var datatable;
 	var clients = function () {
-
-		datatable = $('.kt-datatable').KTDatatable({
-			// datasource definition
-			data: {
-				type: 'remote',
-				source: {
-					read: {
-						// /api/token
-						// url: 'https://keenthemes.com/metronic/tools/preview/api/datatables/demos/default.php',
-						url: 'http://196.221.197.203:5252/api/Client/GetAllClientsPaging',
-						// sample custom headers
-						method: "POST",
-						timeout: 3000,
-						headers: {
-							"Authorization": "Berear " + token
-						},
-						data: {
-							PageNumber: 1,
-							PageSize: 10
-						},
-						map: function (raw) {
-							// sample data mapping
-							console.log(raw);
-							var dataSet = raw;
-							if (typeof raw.data.data !== 'undefined') {
-								dataSet = raw.data.data;
-							}
-							return dataSet;
-						},
-					},
-				},
-				pageSize: 10,
-				serverPaging: true,
-				serverFiltering: true,
-				serverSorting: true,
-			},
-
-			// layout definition
-			layout: {
-				scroll: false,
-				footer: false,
-			},
-
-			// column sorting
-			sortable: true,
-
-			pagination: true,
-
-			search: {
-				input: $('#generalSearch'),
-			},
-
-			// columns definition
-			columns: [
-				{
-					field: 'id',
-					title: '#',
-					sortable: 'asc',
-					width: 30,
-					type: 'number',
-					selector: false,
-					textAlign: 'center',
-				}, {
-					field: 'name',
-					title: 'Name',
-				}, {
-					field: 'address',
-					title: 'Last Name',
-
-				},
-				{
-					field: 'email',
-					title: 'Email',
-				},
-				{
-					field: 'mobile',
-					title: 'Mobile',
-				},
-				{
-					field: 'fax',
-					title: 'Fax',
-				},
-				{
-					field: 'Actions',
-					title: 'Actions',
-					sortable: false,
-					width: 110,
-					overflow: 'visible',
-					autoHide: false,
-					template: function (row) {
-						return '\
-						<a href="javascript:;" data-id="'+ row.id + '" class="btn btn-sm btn-clean btn-icon btn-icon-sm view"  title="View details">\
+		if (datatable) datatable.destroy();
+		datatable = _dt.bindDataTable('#dataTable', [0, 1, 2, 3, 4, 5, 6],
+			function (data, a, b, c) {
+				// console.log(a)
+				if (c.col == 6) {
+					return '\
+						<a href="javascript:;" data-id="' + b.id + '" class="btn btn-sm btn-clean btn-icon btn-icon-sm view"  title="View details">\
                                 <i class="flaticon-eye">\</i>\
 							</a>\
-						<a href="javascript:;" data-id="'+ row.id + '" class="btn btn-sm btn-clean btn-icon btn-icon-sm edit" title="Edit details">\
+						<a href="javascript:;" data-id="' + b.id + '" class="btn btn-sm btn-clean btn-icon btn-icon-sm edit" title="Edit details">\
 							<i class="flaticon2-paper"></i>\
 						</a>\
-						<a href="javascript:;" data-id="'+ row.id + '" class="btn btn-sm btn-clean btn-icon btn-icon-sm delete" title="Delete">\
+						<a href="javascript:;" data-id="' + b.id + '" class="btn btn-sm btn-clean btn-icon btn-icon-sm delete" title="Delete">\
 							<i class="flaticon2-trash"></i>\
 						</a>\
 					';
-					},
-				}],
-		});
+				}
+				return data;
+			},
+			'http://196.221.197.203:5252/api/Client/GetAllClientsPaging', 'POST', {
+			pagenumber: 1,
+			pageSize: 10
+		}, [{
+			"data": "id"
+		},
+		{
+			"data": "name"
+		},
+		{
+			"data": "address"
+		},
+		{
+			"data": "email"
+		},
+		{
+			"data": "mobile"
+		},
+		{
+			"data": "fax"
+		},
+		{
+			data: 'Actions',
+			responsivePriority: -1
+		}
+		]);
 
-		// $('#kt_form_status').on('change', function () {
-		// 	datatable.search($(this).val().toLowerCase(), 'Status');
-		// });
 
-		// $('#kt_form_type').on('change', function () {
-		// 	datatable.search($(this).val().toLowerCase(), 'Type');
-		// });
-
-		// $('#kt_form_status,#kt_form_type').selectpicker();
 
 		$('body').on('click', 'a.delete', function (e) {
 			let id = e.currentTarget.dataset.id;
@@ -188,7 +124,7 @@ var clientsDT = function () {
 						success: function (res) {
 							console.log(res)
 							swal.fire("Done!", "It was succesfully deleted!", "success");
-							datatable.reload();
+							datatable.ajax.reload();
 
 						},
 						error: function (xhr, ajaxOptions, thrownError) {
@@ -222,7 +158,7 @@ var clientsDT = function () {
 					$('#addModal #addNewForm input[name="email"]').val(res.data.email);
 					$('#addModal #addNewForm input[name="mobile"]').val(res.data.mobile);
 					$('#addModal #addNewForm input[name="fax"]').val(res.data.fax);
-					// datatable.reload();
+					// datatable.ajax.reload();
 
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
@@ -303,7 +239,7 @@ var clientsDT = function () {
 					btn.removeClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', false);
 					console.log(response);
 					$('#addModal').modal('hide');
-					datatable.reload()
+					datatable.ajax.reload()
 				},
 				error: function (res) {
 					console.log(response);
@@ -338,7 +274,7 @@ var clientsDT = function () {
 					$('#addModal #addNewForm input[name="fax"]').val(res.data.fax);
 					$('#addModal #addNewForm input[name="id"]').val(res.data.id);
 					// swal.fire("Doneosdflsdfsodfjo!", "It was succesfully deleted!", "success");
-					datatable.reload();
+					datatable.ajax.reload();
 
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
@@ -382,7 +318,7 @@ var clientsDT = function () {
 					btn.removeClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', false);
 					console.log(response);
 					$('#addModal').modal('hide');
-					datatable.reload()
+					datatable.ajax.reload()
 				},
 				error: function (res) {
 					console.log(response);

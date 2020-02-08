@@ -4,6 +4,9 @@
 var driversDT = function () {
 	// Private functions
 	var token = $.cookie("access_token");
+	var _dt = new DataTableEntry(),
+		datatable, _status = 0,
+		_sId;
 	var arrows;
 	if (KTUtil.isRTL()) {
 		arrows = {
@@ -75,106 +78,50 @@ var driversDT = function () {
 	// basic demo
 	var datatable;
 	var drivers = function () {
-
-		datatable = $('.kt-datatable').KTDatatable({
-			// datasource definition
-			data: {
-				type: 'remote',
-				source: {
-					read: {
-						// /api/token
-						// url: 'https://keenthemes.com/metronic/tools/preview/api/datatables/demos/default.php',
-						url: 'http://196.221.197.203:5252/api/Driver/GetAllDriversPaging',
-						// sample custom headers
-						method: "POST",
-						timeout: 3000,
-						headers: {
-							"Authorization": "Berear " + token
-						},
-						data: {
-							PageNumber: 1,
-							PageSize: 10
-						},
-						map: function (raw) {
-							// sample data mapping
-							console.log(raw);
-							var dataSet = raw;
-							if (typeof raw.data.data !== 'undefined') {
-								dataSet = raw.data.data;
-							}
-							return dataSet;
-						},
-					},
-				},
-				pageSize: 10,
-				serverPaging: true,
-				serverFiltering: true,
-				serverSorting: true,
-			},
-
-			// layout definition
-			layout: {
-				scroll: false,
-				footer: false,
-			},
-
-			// column sorting
-			sortable: true,
-
-			pagination: true,
-
-			search: {
-				input: $('#generalSearch'),
-			},
-
-			// columns definition
-			columns: [
-				{
-					field: 'id',
-					title: '#',
-					sortable: 'asc',
-					width: 30,
-					type: 'number',
-					selector: false,
-					textAlign: 'center',
-				}, {
-					field: 'firstName',
-					title: 'First Name',
-				}, {
-					field: 'lastName',
-					title: 'Last Name',
-
-				}, {
-					field: 'dateOfBirth',
-					title: 'Date Of Birth',
-					type: 'date',
-					format: 'MM/DD/YYYY',
-				},
-				{
-					field: 'email',
-					title: 'Email',
-				}, {
-					field: 'Actions',
-					title: 'Actions',
-					sortable: false,
-					width: 110,
-					overflow: 'visible',
-					autoHide: false,
-					template: function (row) {
-						return '\
-						<a href="javascript:;" data-id="'+ row.id + '" class="btn btn-sm btn-clean btn-icon btn-icon-sm view"  title="View details">\
+		if (datatable) datatable.destroy();
+		datatable = _dt.bindDataTable('#dataTable', [0, 1, 2, 3, 4, 5],
+			function (data, a, b, c) {
+				// console.log(a)
+				if (c.col == 5) {
+					return '\
+						<a href="javascript:;" data-id="' + b.id + '" class="btn btn-sm btn-clean btn-icon btn-icon-sm view"  title="View details">\
                                 <i class="flaticon-eye">\</i>\
 							</a>\
-						<a href="javascript:;" data-id="'+ row.id + '" class="btn btn-sm btn-clean btn-icon btn-icon-sm edit" title="Edit details">\
+						<a href="javascript:;" data-id="' + b.id + '" class="btn btn-sm btn-clean btn-icon btn-icon-sm edit" title="Edit details">\
 							<i class="flaticon2-paper"></i>\
 						</a>\
-						<a href="javascript:;" data-id="'+ row.id + '" class="btn btn-sm btn-clean btn-icon btn-icon-sm delete" title="Delete">\
+						<a href="javascript:;" data-id="' + b.id + '" class="btn btn-sm btn-clean btn-icon btn-icon-sm delete" title="Delete">\
 							<i class="flaticon2-trash"></i>\
 						</a>\
 					';
-					},
-				}],
-		});
+				}
+				return data;
+			},
+			'http://196.221.197.203:5252/api/Driver/GetAllDriversPaging', 'POST', {
+			pagenumber: 1,
+			pageSize: 10
+		}, [{
+			"data": "id"
+		},
+		{
+			"data": "firstName"
+		},
+		{
+			"data": "lastName"
+		},
+		{
+			"data": "dateOfBirth"
+		},
+		{
+			"data": "email"
+		},
+		{
+			data: 'Actions',
+			responsivePriority: -1
+		}
+		]);
+
+
 
 		$('body').on('click', 'a.delete', function (e) {
 			let id = e.currentTarget.dataset.id;
@@ -203,7 +150,7 @@ var driversDT = function () {
 						success: function (res) {
 							console.log(res)
 							swal.fire("Done!", "It was succesfully deleted!", "success");
-							datatable.reload();
+							datatable.ajax.reload();
 
 						},
 						error: function (xhr, ajaxOptions, thrownError) {
@@ -298,7 +245,7 @@ var driversDT = function () {
 					btn.removeClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', false);
 					console.log(response);
 					$('#addModal').modal('hide');
-					datatable.reload()
+					datatable.ajax.reload()
 				},
 				error: function (res) {
 					console.log(response);
@@ -389,7 +336,7 @@ var driversDT = function () {
 					btn.removeClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', false);
 					console.log(response);
 					$('#addModal').modal('hide');
-					datatable.reload()
+					datatable.ajax.reload()
 				},
 				error: function (res) {
 					console.log(response);
