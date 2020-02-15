@@ -4,7 +4,24 @@
 var KTLoginGeneral = function () {
 
     var login = $('#kt_login');
-
+    //start--convert form to json
+    $.fn.extractObject = function () {
+        var accum = {};
+        function add(accum, namev, value) {
+            if (namev.length == 1)
+                accum[namev[0]] = value;
+            else {
+                if (accum[namev[0]] == null)
+                    accum[namev[0]] = {};
+                add(accum[namev[0]], namev.slice(1), value);
+            }
+        };
+        this.find('input, textarea, select').each(function () {
+            add(accum, $(this).attr('name').split('.'), $(this).val());
+        });
+        return accum;
+    };
+    //end--convert form to json
     var showErrorMsg = function (form, type, msg) {
         var alert = $('<div class="alert alert-' + type + ' alert-dismissible" role="alert">\
 			<div class="alert-text">'+ msg + '</div>\
@@ -76,6 +93,7 @@ var KTLoginGeneral = function () {
             var btn = $(this);
             var form = $(this).closest('form');
 
+            var formData = $('#signIn').extractObject();
             form.validate({
                 rules: {
                     username: {
@@ -99,19 +117,33 @@ var KTLoginGeneral = function () {
                 method: "POST",
 
                 data: {
-                    "username": login.username,
-                    "password": login.password,
+                    // username: login.username,
+                    // password: login.password,
                     "grant_type": "2"
                 },
                 success: function (response, status, xhr, $form) {
                     // similate 2s delay
                     // docCookies.setItem('access_token', response.access_token);
                     $.cookie("access_token", response.access_token, { expires: response.expires_in });
-                    btn.removeClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', false);
+                    var token = $.cookie("access_token");
+                    console.log(response)
+                    $.ajax({
+                        url: "http://196.221.197.203:5252/api/login",
+                        method: "POST",
+                        headers: {
+                            "Authorization": "Berear " + token
+                        },
+                        data: {
+                            ...formData,
+                            "grant_type": "1"
+                        },
+                        success: function (res) {
+                            window.location.href = "Vehicles.html"
+                            console.log(res)
+                        }
+                    })
+                    // btn.removeClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', false);
                     // console.log( $.cookie("access_token"));
-                    window.location.href = "Vehicles.html"
-
-
                 },
 
                 error: function (res) {
@@ -235,6 +267,8 @@ var KTLoginGeneral = function () {
         }
     };
 }();
+
+
 
 // Class Initialization
 jQuery(document).ready(function () {

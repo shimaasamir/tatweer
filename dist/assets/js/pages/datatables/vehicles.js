@@ -5,6 +5,7 @@
 var vehiclesDT = function () {
 	// Private functions
 	var token = $.cookie("access_token");
+	// console.log(token);
 	var _dt = new DataTableEntry(),
 		datatable, _status = 0,
 		_sId;
@@ -25,13 +26,13 @@ var vehiclesDT = function () {
 		});
 		return accum;
 	};
-
 	//end--convert form to json
 	// basic demo
 	var datatable;
 	var vehicles = function () {
-
+		// console.log(token)
 		if (datatable) datatable.destroy();
+
 		datatable = _dt.bindDataTable('#dataTable', [0, 1, 2, 3, 4, 5, 6, 7],
 			function (data, a, b, c) {
 				// console.log(a)

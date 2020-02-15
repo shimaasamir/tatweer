@@ -41,9 +41,11 @@ function DataTableEntry() {
                 dataType: "json",
                 cache: false,
                 headers: {
-                    "Authorization": "Berear " + token
+                    "Authorization": "Berear " + token,
+                    // "Content-Type": "application/x-www-form-urlencoded"
                 },
                 complete: function (httpObj, textStatus) {
+                    console.log(httpObj)
                     if (httpObj.status == 401) {
                         window.location.href = '/login.html';
                     }
@@ -138,12 +140,16 @@ function DataTableEntry() {
                 ajaxData.pageSize = d.length;
                 return ajaxData;
             },
+
             dataType: "json",
             cache: false,
             headers: {
-                "Authorization": "Berear " + token
+                "Authorization": "Berear " + token,
+                // "Content-Type": "application/x-www-form-urlencoded"
             },
             complete: function (httpObj, textStatus) {
+                console.log(httpObj)
+
                 if (httpObj.status == 401) {
                     window.location.href = '/login.html';
                 }

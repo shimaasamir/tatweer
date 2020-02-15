@@ -37734,3 +37734,18 @@ body {
     .kt-footer .kt-footer__menu .kt-footer__menu-link:first-child {
       padding-right: 0;
       margin-right: 0; } }
+
+.my-custom-style {
+  padding: 1rem 0.5rem;
+  color: #2c77f4; }
+  .my-custom-style .my-custom-element {
+    margin-right: 1rem; }
+
+@media (max-width: 1024px) {
+  .my-custom-style {
+    padding: 0.5rem 0.25rem; }
+    .my-custom-style .my-custom-element {
+      margin-right: 0.5rem; } }
+
+.pac-container {
+  z-index: 100000000 !important; }

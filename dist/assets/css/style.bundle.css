@@ -37761,3 +37761,18 @@ body {
     .kt-footer .kt-footer__menu .kt-footer__menu-link:first-child {
       padding-left: 0;
       margin-left: 0; } }
+
+.my-custom-style {
+  padding: 1rem 0.5rem;
+  color: #2c77f4; }
+  .my-custom-style .my-custom-element {
+    margin-left: 1rem; }
+
+@media (max-width: 1024px) {
+  .my-custom-style {
+    padding: 0.5rem 0.25rem; }
+    .my-custom-style .my-custom-element {
+      margin-left: 0.5rem; } }
+
+.pac-container {
+  z-index: 100000000 !important; }
