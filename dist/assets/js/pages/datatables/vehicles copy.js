@@ -162,7 +162,7 @@ var vehiclesDT = function () {
 						type: "POST",
 						data: {
 							id: id,
-							isActive: false
+							statusId: 4
 						},
 						headers: {
 							"Authorization": "Berear " + token
