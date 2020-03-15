@@ -54,6 +54,14 @@ var driversDT = function () {
 		orientation: "bottom left",
 		templates: arrows
 	});
+	$('#employee').change(function () {
+		// if($(this).is(":checked")) {
+		// 	// var returnVal = confirm("Are you sure?");
+		// 	$(this).attr("checked", false);
+		// }
+		$('#employee').val($(this).is(':checked'));
+		console.log($('#employee').val());
+	});
 	var licensePicURL = new KTAvatar('licensePicURL');
 	var picURL = new KTAvatar('picURL');
 	var roles = [];
@@ -138,11 +146,11 @@ var driversDT = function () {
 
 				if (result.value) {
 					$.ajax({
-						url: "https://aa4f0a57.ngrok.io/api/user/updateStatus",
+						url: "https://aa4f0a57.ngrok.io/api/Driver/UpdateDRiver",
 						type: "POST",
 						data: {
 							ID: id,
-							statusId: 4
+							isActive: false
 						},
 						headers: {
 							"Authorization": "Berear " + token
@@ -232,6 +240,8 @@ var driversDT = function () {
 					...formData,
 					licensePicURL: "",
 					picURL: "",
+					roleId: 3,
+					isEmployee: $("#employee").val(),
 					isActive: true,
 					createDate: new Date(),
 					modifyDate: new Date(),
@@ -325,6 +335,7 @@ var driversDT = function () {
 					licensePicURL: "",
 					picURL: "",
 					isActive: true,
+					roleId: 3,
 					createDate: new Date(),
 					modifyDate: new Date(),
 					modifyBy: 1

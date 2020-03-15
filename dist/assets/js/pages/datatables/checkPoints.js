@@ -142,7 +142,7 @@ var checkPointsDT = function () {
 						type: "POST",
 						data: {
 							ID: id,
-							statusId: 4
+							isActive: false
 						},
 						headers: {
 							"Authorization": "Berear " + token

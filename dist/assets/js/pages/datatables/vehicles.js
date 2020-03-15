@@ -98,7 +98,7 @@ var vehiclesDT = function () {
 
 				if (result.value) {
 					$.ajax({
-						url: "https://aa4f0a57.ngrok.io/api/Vehicle/updateStatus",
+						url: "https://aa4f0a57.ngrok.io/api/Vehicle/UpdateVehicle",
 						type: "POST",
 						data: {
 							id: id,
@@ -196,6 +196,8 @@ var vehiclesDT = function () {
 					$('#addModal #addNewForm input[name="engineNumber"]').val(res.data.engineNumber);
 					$('#addModal #addNewForm input[name="chassisNumber"]').val(res.data.chassisNumber);
 					$('#addModal #addNewForm input[name="isAsset"]').prop("checked", res.data.isAsset ? true : false)
+					// $('#asset').val($(this).is(':checked'));
+
 					$('#addModal #addNewForm input[name="capacity"]').val(res.data.capacity);
 					$('#addModal #addNewForm input[name="id"]').val(res.data.id);
 					// swal.fire("Doneosdflsdfsodfjo!", "It was succesfully deleted!", "success");
@@ -208,6 +210,14 @@ var vehiclesDT = function () {
 			})
 
 		});
+		$('#asset').change(function () {
+			// if($(this).is(":checked")) {
+			// 	// var returnVal = confirm("Are you sure?");
+			// 	$(this).attr("checked", false);
+			// }
+			$('#asset').val($(this).is(':checked'));
+			console.log($('#asset').val());
+		});
 		$('#addNew').click(function (e) {
 			e.preventDefault();
 			var btn = $(this);
@@ -217,12 +227,19 @@ var vehiclesDT = function () {
 			var formData = $('#addNewForm').extractObject();
 
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
+			// $('#asset').val(false)
+			// $('#asset').change(function () {
+			// 	cb = $(this);
+			// 	cb.val(cb.prop('checked'));
+			// })
+
+
 			form.ajaxSubmit({
 				url: "https://aa4f0a57.ngrok.io/api/Vehicle/AddVehicle",
 				method: "POST",
 				data: {
 					...formData,
-					isAsset: $('#addModal #addNewForm input[name="isAsset"]:checked').length > 0,
+					isAsset: $('asset').val(),
 					isActive: true,
 					createDate: new Date(),
 					modifyDate: new Date(),

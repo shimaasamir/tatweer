@@ -112,7 +112,7 @@ var clientsDT = function () {
 
 				if (result.value) {
 					$.ajax({
-						url: "https://aa4f0a57.ngrok.io/api/user/updateStatus",
+						url: "https://aa4f0a57.ngrok.io/api/Client/UpdateClient",
 						type: "POST",
 						data: {
 							ID: id,
@@ -210,16 +210,6 @@ var clientsDT = function () {
 
 
 			var formData = $('#addNewForm').extractObject();
-			// console.log($('#addModal #addNewForm input[name="isAsset"]:checked').length > 0)
-			// formData = {
-			// 	...formData,
-			// 	isAsset: $('#addModal #addNewForm input[name="isAsset"]:checked').length > 0,
-			// 	isActive: true,
-			// 	createDate: new Date(),
-			// 	modifyDate: new Date(),
-			// 	modifyBy: 1
-			// }
-
 			console.log(formData);
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			form.ajaxSubmit({
@@ -227,6 +217,7 @@ var clientsDT = function () {
 				method: "POST",
 				data: {
 					...formData,
+					roleId: 2,
 					isActive: true,
 
 				},
@@ -306,6 +297,7 @@ var clientsDT = function () {
 				method: "POST",
 				data: {
 					...formData,
+					roleId: 2,
 					isActive: true,
 
 				},

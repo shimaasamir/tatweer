@@ -106,7 +106,7 @@
 							</li>
 							<li class="kt-menu__item " aria-haspopup="true">
 								<a href="clients.html" class="kt-menu__link ">
-									<i class="kt-menu__link-icon flaticon2-gear"></i>
+									<i class="kt-menu__link-icon fa fa-users"></i>
 									<span class="kt-menu__link-text">Clients</span>
 								</a>
 							</li>
@@ -166,7 +166,43 @@
 
 						<!--end: Search -->
 
-						<!--begin: User Bar -->
+
+						<!--begin: Language bar -->
+						<div class="kt-header__topbar-item kt-header__topbar-item--langs">
+							<div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="10px,0px">
+								<span class="kt-header__topbar-icon">
+									<img class="" src="assets/media/flags/260-united-kingdom.svg" alt="" />
+								</span>
+							</div>
+							<div
+								class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-top-unround">
+								<ul class="kt-nav kt-margin-t-10 kt-margin-b-10">
+									<li class="kt-nav__item kt-nav__item--active">
+										<a href="#" class="kt-nav__link">
+											<span class="kt-nav__link-icon"><img
+													src="assets/media/flags/226-united-states.svg" alt="" /></span>
+											<span class="kt-nav__link-text">English</span>
+										</a>
+									</li>
+									<li class="kt-nav__item">
+										<a href="#" class="kt-nav__link">
+											<span class="kt-nav__link-icon"><img src="assets/media/flags/128-spain.svg"
+													alt="" /></span>
+											<span class="kt-nav__link-text">Spanish</span>
+										</a>
+									</li>
+									<li class="kt-nav__item">
+										<a href="#" class="kt-nav__link">
+											<span class="kt-nav__link-icon"><img
+													src="assets/media/flags/162-germany.svg" alt="" /></span>
+											<span class="kt-nav__link-text">German</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+
+						<!--end: Language bar -->
 						<div class="kt-header__topbar-item kt-header__topbar-item--user">
 							<div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="0px,0px">
 								<div class="kt-header__topbar-user">
@@ -288,12 +324,11 @@
 				<div class="kt-footer  kt-grid__item kt-grid kt-grid--desktop kt-grid--ver-desktop" id="kt_footer">
 					<div class="kt-container  kt-container--fluid ">
 						<div class="kt-footer__copyright">
-							2020&nbsp;&copy;&nbsp;<a href="" target="_blank" class="kt-link">Keenthemes</a>
+							2020&nbsp;&copy;&nbsp;<a href="" target="_blank" class="kt-link">Tatweer</a>
 						</div>
 						<div class="kt-footer__menu">
-							<a href="" target="_blank" class="kt-footer__menu-link kt-link">About</a>
-							<a href="" target="_blank" class="kt-footer__menu-link kt-link">Team</a>
-							<a href="" target="_blank" class="kt-footer__menu-link kt-link">Contact</a>
+							<a href="about.html" class="kt-footer__menu-link kt-link">About</a>
+
 						</div>
 					</div>
 				</div>
@@ -345,7 +380,7 @@
 									<label class="form-control-label">Password</label>
 									<input type="password" autocomplete="false" name="password" class="form-control" />
 								</div>
-								<div class="form-group ">
+								<!-- <div class="form-group ">
 									<label class="form-control-label">Role</label>
 									<div>
 										<select class="form-control kt-select2 d-block" id="roles" name="roleId"
@@ -353,7 +388,7 @@
 											<option></option>
 										</select>
 									</div>
-								</div>
+								</div> -->
 
 							</div>
 							<div class="col-md-6">
@@ -400,7 +435,7 @@
 
 								<div class="kt-checkbox-list">
 									<label class="kt-checkbox">
-										<input type="checkbox" name="isEmployee"> Employee
+										<input id="employee" type="checkbox" name="isEmployee"> Employee
 										<span></span>
 									</label>
 								</div>

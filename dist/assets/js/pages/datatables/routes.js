@@ -198,7 +198,7 @@ var routesDT = function () {
 
 				if (result.value) {
 					$.ajax({
-						url: "https://aa4f0a57.ngrok.io/api/Route/updateStatus",
+						url: "https://aa4f0a57.ngrok.io/api/Route/UpdateRoute",
 						type: "POST",
 						data: {
 							ID: id,
@@ -260,7 +260,7 @@ var routesDT = function () {
 		});
 		// show add new modal
 		$('body').on('click', '#showAddNewModal', function (e) {
-			$(".modal-title").text("Add Route");
+			$("#showAddNewModal .modal-title").text("Add Route");
 			$('#addModal #addNewForm input').prop("disabled", false);
 			$('#addModal #addNew').show();
 			$('#addModal #update').hide();
@@ -389,6 +389,8 @@ var routesDT = function () {
 			let id = e.currentTarget.dataset.id;
 			// console.log(e.currentTarget.dataset.id);	
 			$('#checkPointsModal').modal('show');
+			$("#checkPointsModal .modal-title").text("Manage Check/ Assembly pooints ");
+
 			$('#checkid').val(id);
 			if (checkPointsdatatable) checkPointsdatatable.destroy()
 			checkPointsdatatable = $('#checkPointsTable').DataTable({
@@ -489,7 +491,7 @@ var routesDT = function () {
 
 				if (result.value) {
 					$.ajax({
-						url: "https://aa4f0a57.ngrok.io/api/CheckPoints/updateStatus",
+						url: "https://aa4f0a57.ngrok.io/api/CheckPoints/UpdateCheckPoint",
 						type: "POST",
 						data: {
 							ID: id,
