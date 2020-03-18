@@ -9880,7 +9880,7 @@ $(document).ready(function() {
 
 "use strict";
 
-var KTQuickSearch = function() {
+var KTQuickSearch = function () {
     var target;
     var form;
     var input;
@@ -9899,7 +9899,7 @@ var KTQuickSearch = function() {
     var resultClass = 'kt-quick-search--has-result';
     var minLength = 2;
 
-    var showProgress = function() {
+    var showProgress = function () {
         isProcessing = true;
         KTUtil.addClass(inputGroup, spinnerClass);
 
@@ -9908,7 +9908,7 @@ var KTQuickSearch = function() {
         }
     }
 
-    var hideProgress = function() {
+    var hideProgress = function () {
         isProcessing = false;
         KTUtil.removeClass(inputGroup, spinnerClass);
 
@@ -9921,20 +9921,20 @@ var KTQuickSearch = function() {
         }
     }
 
-    var showDropdown = function() {
+    var showDropdown = function () {
         if (resultDropdownToggle && !KTUtil.hasClass(resultDropdown, 'show')) {
             $(resultDropdownToggle).dropdown('toggle');
             $(resultDropdownToggle).dropdown('update');
         }
     }
 
-    var hideDropdown = function() {
+    var hideDropdown = function () {
         if (resultDropdownToggle && KTUtil.hasClass(resultDropdown, 'show')) {
             $(resultDropdownToggle).dropdown('toggle');
         }
     }
 
-    var processSearch = function() {
+    var processSearch = function () {
         if (hasResult && query === input.value) {
             hideProgress();
             KTUtil.addClass(target, resultClass);
@@ -9950,14 +9950,14 @@ var KTQuickSearch = function() {
         showProgress();
         hideDropdown();
 
-        setTimeout(function() {
+        setTimeout(function () {
             $.ajax({
                 url: 'https://keenthemes.com/metronic/tools/preview/api/quick_search.php',
                 data: {
                     query: query
                 },
                 dataType: 'html',
-                success: function(res) {
+                success: function (response) {
                     hasResult = true;
                     hideProgress();
                     KTUtil.addClass(target, resultClass);
@@ -9965,7 +9965,7 @@ var KTQuickSearch = function() {
                     showDropdown();
                     KTUtil.scrollUpdate(resultWrapper);
                 },
-                error: function(res) {
+                error: function (response) {
                     hasResult = false;
                     hideProgress();
                     KTUtil.addClass(target, resultClass);
@@ -9977,7 +9977,7 @@ var KTQuickSearch = function() {
         }, 1000);
     }
 
-    var handleCancel = function(e) {
+    var handleCancel = function (e) {
         input.value = '';
         query = '';
         hasResult = false;
@@ -9986,7 +9986,7 @@ var KTQuickSearch = function() {
         hideDropdown();
     }
 
-    var handleSearch = function() {
+    var handleSearch = function () {
         if (input.value.length < minLength) {
             hideProgress();
             hideDropdown();
@@ -10002,13 +10002,13 @@ var KTQuickSearch = function() {
             clearTimeout(timeout);
         }
 
-        timeout = setTimeout(function() {
+        timeout = setTimeout(function () {
             processSearch();
         }, requestTimeout);
     }
 
     return {
-        init: function(element) {
+        init: function (element) {
             // Init
             target = element;
             form = KTUtil.find(target, '.kt-quick-search__form');
@@ -10024,7 +10024,7 @@ var KTQuickSearch = function() {
             KTUtil.addEvent(input, 'focus', handleSearch);
 
             // Prevent enter click
-            form.onkeypress = function(e) {
+            form.onkeypress = function (e) {
                 var key = e.charCode || e.keyCode || 0;
                 if (key == 13) {
                     e.preventDefault();
@@ -10041,7 +10041,7 @@ var KTQuickSearchOffcanvas = KTQuickSearch;
 
 // Init on page load completed
 
-KTUtil.ready(function() {
+KTUtil.ready(function () {
     if (KTUtil.get('kt_quick_search_dropdown')) {
         KTQuickSearch().init(KTUtil.get('kt_quick_search_dropdown'));
     }

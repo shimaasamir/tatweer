@@ -14,6 +14,8 @@ var routesDT = function () {
 	function startPoint() {
 		var input = document.getElementById('StartPoint');
 		var autocomplete = new google.maps.places.Autocomplete(input);
+		autocomplete.setComponentRestrictions(
+			{ 'country': ['eg'] });
 		google.maps.event.addListener(autocomplete, 'place_changed', function () {
 			var place = autocomplete.getPlace();
 			$('#startLatitude').val(place.geometry['location'].lat());
@@ -28,6 +30,8 @@ var routesDT = function () {
 	function endPoint() {
 		var input = document.getElementById('EndPoint');
 		var autocomplete = new google.maps.places.Autocomplete(input);
+		autocomplete.setComponentRestrictions(
+			{ 'country': ['eg'] });
 		google.maps.event.addListener(autocomplete, 'place_changed', function () {
 			var place = autocomplete.getPlace();
 			$('#endLatitude').val(place.geometry['location'].lat());
@@ -39,35 +43,27 @@ var routesDT = function () {
 	function checkPoint() {
 		var input = document.getElementById('checkPoint');
 		var autocomplete = new google.maps.places.Autocomplete(input);
+		autocomplete.setComponentRestrictions(
+			{ 'country': ['eg'] });
 		google.maps.event.addListener(autocomplete, 'place_changed', function () {
 			var place = autocomplete.getPlace();
 			$('#latitude').val(place.geometry['location'].lat());
 			$('#longitude').val(place.geometry['location'].lng());
 		});
 	}
-	if (KTUtil.isRTL()) {
-		arrows = {
-			leftArrow: '<i class="la la-angle-right"></i>',
-			rightArrow: '<i class="la la-angle-left"></i>'
-		}
-	} else {
-		arrows = {
-			leftArrow: '<i class="la la-angle-left"></i>',
-			rightArrow: '<i class="la la-angle-right"></i>'
-		}
-	}
+
 	var loadAllClients = function (modal) {
 		clients = [];
 		$.ajax({
-			url: "https://aa4f0a57.ngrok.io/api/Client/GetAllClients",
+			url: "http://tatweer-api.ngrok.io/api/Client/GetAllClients",
 			type: "GET",
 
 			headers: {
 				"Authorization": "Berear " + token
 			},
-			success: function (res) {
+			success: function (response) {
 
-				res.data.map(client => {
+				response.data.map(client => {
 					clients.push({ ...client, text: client.name })
 				})
 				console.log(clients)
@@ -100,22 +96,7 @@ var routesDT = function () {
 
 
 	//start--convert form to json
-	$.fn.extractObject = function () {
-		var accum = {};
-		function add(accum, namev, value) {
-			if (namev.length == 1)
-				accum[namev[0]] = value;
-			else {
-				if (accum[namev[0]] == null)
-					accum[namev[0]] = {};
-				add(accum[namev[0]], namev.slice(1), value);
-			}
-		};
-		this.find('input, textarea, select').each(function () {
-			add(accum, $(this).attr('name').split('.'), $(this).val());
-		});
-		return accum;
-	};
+
 	//end--convert form to json
 	// basic demo
 	var datatable = $('#dataTable').DataTable();
@@ -139,7 +120,7 @@ var routesDT = function () {
 				searching: false,
 				paging: false,
 				ajax: {
-					url: "https://aa4f0a57.ngrok.io/api/Route/GetAllRoutes",
+					url: "http://tatweer-api.ngrok.io/api/Route/GetAllRoutes",
 					type: "POST",
 					data: {
 						clientId: clientID
@@ -198,7 +179,7 @@ var routesDT = function () {
 
 				if (result.value) {
 					$.ajax({
-						url: "https://aa4f0a57.ngrok.io/api/Route/UpdateRoute",
+						url: "http://tatweer-api.ngrok.io/api/Route/UpdateRoute",
 						type: "POST",
 						data: {
 							ID: id,
@@ -207,8 +188,8 @@ var routesDT = function () {
 						headers: {
 							"Authorization": "Berear " + token
 						},
-						success: function (res) {
-							console.log(res)
+						success: function (response) {
+							console.log(response)
 							swal.fire("Done!", "It was succesfully deleted!", "success");
 							datatable.ajax.reload();
 
@@ -231,23 +212,27 @@ var routesDT = function () {
 			loadAllClients(true)
 
 			$.ajax({
-				url: "https://aa4f0a57.ngrok.io/api/Route/GetRoute/" + id,
+				url: "http://tatweer-api.ngrok.io/api/Route/GetRoute/" + id,
 				type: "GET",
 
 				headers: {
 					"Authorization": "Berear " + token
 				},
-				success: function (res) {
-					console.log(res)
+				success: function (response) {
+					console.log(response)
 					$('#addModal').modal('show');
 					console.log(viewForm)
-					$('#addModal #addNewForm input[name="routeName"]').val(res.data.routeName);
-					$('#addModal #addNewForm input[name="latitude"]').val(res.data.latitude);
-					$('#addModal #addNewForm input[name="longitude"]').val(res.data.longitude);
-					$('#clients').val(res.data.clientID);
+					$('#addModal #addNewForm input[name="routeName"]').val(response.data.routeName);
+					$('#addModal #addNewForm input[name="startLatitude"]').val(response.data.startLatitude);
+					$('#addModal #addNewForm input[name="startLongitude"]').val(response.data.startLongitude);
+					$('#addModal #addNewForm input[name="endLatitude"]').val(response.data.endLatitude);
+					$('#addModal #addNewForm input[name="endlongitude"]').val(response.data.endlongitude);
+					$('#clients').val(response.data.clientID);
 					$('#clients').trigger('change');
+					GetAddress(response.data.startLatitude, response.data.startLongitude, $('#addModal #addNewForm input[name="startPoint"]'))
+					GetAddress(response.data.endLatitude, response.data.endLongitude, $('#addModal #addNewForm input[name="endPoint"]'))
 
-					$('#addModal #addNewForm input[name="id"]').val(res.data.id);
+					$('#addModal #addNewForm input[name="id"]').val(response.data.id);
 					// swal.fire("Doneosdflsdfsodfjo!", "It was succesfully deleted!", "success");
 					// datatable.reload();
 
@@ -279,6 +264,35 @@ var routesDT = function () {
 			e.preventDefault();
 			var btn = $(this);
 			var form = $('#addNewForm');
+			form.validate({
+				rules: {
+					routeName: {
+						required: true
+					},
+					startLatitude: {
+						required: true
+					},
+					startLongitude: {
+						required: true
+					},
+					endLatitude: {
+						required: true
+					},
+					endLongitude: {
+						required: true
+					},
+					clientId: {
+						required: true
+					},
+
+
+
+				}
+			});
+
+			if (!form.valid()) {
+				return;
+			}
 			var formData = $('#addNewForm').extractObject();
 			delete formData.startPoint;
 			delete formData.endPoint;
@@ -286,7 +300,7 @@ var routesDT = function () {
 			console.log(formData);
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			form.ajaxSubmit({
-				url: "https://aa4f0a57.ngrok.io/api/Route/AddRoute",
+				url: "http://tatweer-api.ngrok.io/api/Route/AddRoute",
 				method: "POST",
 				data: {
 					...formData,
@@ -304,12 +318,12 @@ var routesDT = function () {
 					btn.removeClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', false);
 					console.log(response);
 					$('#addModal').modal('hide');
-					datatable.ajax.reload()
+					// datatable.ajax.reload()
 				},
-				error: function (res) {
-					console.log(res);
+				error: function (response) {
+					console.log(response);
 					btn.removeClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', false);
-					// showErrorMsg(form, 'danger', res.message);
+					// showErrorMsg(form, 'danger', response.message);
 				}
 			});
 		});
@@ -325,20 +339,24 @@ var routesDT = function () {
 			$('#addModal #update').show();
 
 			$.ajax({
-				url: "https://aa4f0a57.ngrok.io/api/Route/GetRoute/" + id,
+				url: "http://tatweer-api.ngrok.io/api/Route/GetRoute/" + id,
 				type: "GET",
 
 				headers: {
 					"Authorization": "Berear " + token
 				},
-				success: function (res) {
-					$('#addModal').modal('show');
-					$('#addModal #addNewForm input[name="name"]').val(res.data.name);
-					$('#addModal #addNewForm input[name="latitude"]').val(res.data.latitude);
-					$('#addModal #addNewForm input[name="longitude"]').val(res.data.longitude);
-					$('#clients').val(res.data.clientID);
+				success: function (response) {
+					$('#addModal #addNewForm input[name="routeName"]').val(response.data.routeName);
+					$('#addModal #addNewForm input[name="startLatitude"]').val(response.data.startLatitude);
+					$('#addModal #addNewForm input[name="startLongitude"]').val(response.data.startLongitude);
+					$('#addModal #addNewForm input[name="endLatitude"]').val(response.data.endLatitude);
+					$('#addModal #addNewForm input[name="endlongitude"]').val(response.data.endlongitude);
+					$('#clients').val(response.data.clientID);
+					GetAddress(response.data.startLatitude, response.data.startLongitude, $('#addModal #addNewForm input[name="startPoint"]'))
+					GetAddress(response.data.endLatitude, response.data.endLongitude, $('#addModal #addNewForm input[name="endPoint"]'))
 					$('#clients').trigger('change');
-					$('#addModal #addNewForm input[name="id"]').val(res.data.id);
+					$('#addModal #addNewForm input[name="id"]').val(response.data.id);
+					$('#addModal').modal('show');
 
 
 				},
@@ -353,12 +371,41 @@ var routesDT = function () {
 			var btn = $(this);
 			var form = $('#addNewForm');
 
+			form.validate({
+				rules: {
+					routeName: {
+						required: true
+					},
+					startLatitude: {
+						required: true
+					},
+					startLongitude: {
+						required: true
+					},
+					endLatitude: {
+						required: true
+					},
+					endLongitude: {
+						required: true
+					},
+					clientId: {
+						required: true
+					},
+
+
+
+				}
+			});
+
+			if (!form.valid()) {
+				return;
+			}
 
 			var formData = $('#addNewForm').extractObject();
 			console.log(formData)
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			form.ajaxSubmit({
-				url: "https://aa4f0a57.ngrok.io/api/Route/UpdateRoute",
+				url: "http://tatweer-api.ngrok.io/api/Route/UpdateRoute",
 				method: "POST",
 				data: {
 					...formData,
@@ -378,9 +425,9 @@ var routesDT = function () {
 					$('#addModal').modal('hide');
 					datatable.ajax.reload()
 				},
-				error: function (res) {
+				error: function (response) {
 					console.log(r); es
-					showErrorMsg(form, 'danger', res.message);
+					showErrorMsg(form, 'danger', response.message);
 				}
 			});
 		});
@@ -400,7 +447,7 @@ var routesDT = function () {
 				serverSide: false,
 				searching: false,
 				ajax: {
-					url: "https://aa4f0a57.ngrok.io/api/CheckPoints/GetAllCheckPoints",
+					url: "http://tatweer-api.ngrok.io/api/CheckPoints/GetAllCheckPoints",
 					type: "POST",
 					data: {
 						routeId: id
@@ -445,7 +492,7 @@ var routesDT = function () {
 			console.log(formData);
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			formpoint.ajaxSubmit({
-				url: "https://aa4f0a57.ngrok.io/api/CheckPoints/AddCheckPoint",
+				url: "http://tatweer-api.ngrok.io/api/CheckPoints/AddCheckPoint",
 				method: "POST",
 				data: {
 					...formData,
@@ -467,10 +514,10 @@ var routesDT = function () {
 					$('#longitude').val('');
 					checkPointsdatatable.ajax.reload()
 				},
-				error: function (res) {
-					console.log(res);
+				error: function (response) {
+					console.log(response);
 					btn.removeClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', false);
-					// showErrorMsg(form, 'danger', res.message);
+					// showErrorMsg(form, 'danger', response.message);
 				}
 			});
 		});
@@ -491,7 +538,7 @@ var routesDT = function () {
 
 				if (result.value) {
 					$.ajax({
-						url: "https://aa4f0a57.ngrok.io/api/CheckPoints/UpdateCheckPoint",
+						url: "http://tatweer-api.ngrok.io/api/CheckPoints/UpdateCheckPoint",
 						type: "POST",
 						data: {
 							ID: id,
@@ -500,8 +547,8 @@ var routesDT = function () {
 						headers: {
 							"Authorization": "Berear " + token
 						},
-						success: function (res) {
-							console.log(res)
+						success: function (response) {
+							console.log(response)
 							swal.fire("Done!", "It was succesfully deleted!", "success");
 							checkPointsdatatable.ajax.reload();
 

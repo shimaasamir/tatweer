@@ -10,23 +10,10 @@ var vehiclesDT = function () {
 	var _dt = new DataTableEntry(),
 		datatable, _status = 0,
 		_sId;
+
+
 	//start--convert form to json
-	$.fn.extractObject = function () {
-		var accum = {};
-		function add(accum, namev, value) {
-			if (namev.length == 1)
-				accum[namev[0]] = value;
-			else {
-				if (accum[namev[0]] == null)
-					accum[namev[0]] = {};
-				add(accum[namev[0]], namev.slice(1), value);
-			}
-		};
-		this.find('input, textarea, select').each(function () {
-			add(accum, $(this).attr('name').split('.'), $(this).val());
-		});
-		return accum;
-	};
+
 	//end--convert form to json
 	// basic demo
 	var datatable;
@@ -52,7 +39,7 @@ var vehiclesDT = function () {
 				}
 				return data;
 			},
-			'https://aa4f0a57.ngrok.io/api/Vehicle/GetAllVehiclesPaging', 'POST', {
+			'http://tatweer-api.ngrok.io/api/Vehicle/GetAllVehiclesPaging', 'POST', {
 			pagenumber: 1,
 			pageSize: 10
 		}, [{
@@ -98,7 +85,7 @@ var vehiclesDT = function () {
 
 				if (result.value) {
 					$.ajax({
-						url: "https://aa4f0a57.ngrok.io/api/Vehicle/UpdateVehicle",
+						url: "http://tatweer-api.ngrok.io/api/Vehicle/UpdateVehicle",
 						type: "POST",
 						data: {
 							id: id,
@@ -107,8 +94,8 @@ var vehiclesDT = function () {
 						headers: {
 							"Authorization": "Berear " + token
 						},
-						success: function (res) {
-							console.log(res)
+						success: function (response) {
+							console.log(response)
 							swal.fire("Done!", "It was succesfully deleted!", "success");
 							datatable.ajax.reload();
 
@@ -127,25 +114,26 @@ var vehiclesDT = function () {
 			$(".modal-title").text("View Vehicle");
 			$('#addModal #addNewForm input').prop("disabled", true);
 			$('#addModal #addNew').hide();
+			$('#addModal #update').hide();
 
 			$.ajax({
-				url: "https://aa4f0a57.ngrok.io/api/Vehicle/GetVehicle/" + id,
+				url: "http://tatweer-api.ngrok.io/api/Vehicle/GetVehicle/" + id,
 				type: "GET",
 				headers: {
 					"Authorization": "Berear " + token
 				},
-				success: function (res) {
-					console.log(res)
+				success: function (response) {
+					console.log(response)
 					$('#addModal').modal('show');
 					console.log(viewForm)
-					$('#addModal #addNewForm input[name="brand"]').val(res.data.brand);
-					$('#addModal #addNewForm input[name="model"]').val(res.data.model);
-					$('#addModal #addNewForm input[name="color"]').val(res.data.color);
-					$('#addModal #addNewForm input[name="plateNumber"]').val(res.data.plateNumber);
-					$('#addModal #addNewForm input[name="engineNumber"]').val(res.data.engineNumber);
-					$('#addModal #addNewForm input[name="chassisNumber"]').val(res.data.chassisNumber);
-					$('#addModal #addNewForm input[name="isAsset"]').prop("checked", res.data.isAsset ? true : false)
-					$('#addModal #addNewForm input[name="capacity"]').val(res.data.capacity);
+					$('#addModal #addNewForm input[name="brand"]').val(response.data.brand);
+					$('#addModal #addNewForm input[name="model"]').val(response.data.model);
+					$('#addModal #addNewForm input[name="color"]').val(response.data.color);
+					$('#addModal #addNewForm input[name="plateNumber"]').val(response.data.plateNumber);
+					$('#addModal #addNewForm input[name="engineNumber"]').val(response.data.engineNumber);
+					$('#addModal #addNewForm input[name="chassisNumber"]').val(response.data.chassisNumber);
+					$('#addModal #addNewForm input[name="isAsset"]').prop("checked", response.data.isAsset ? true : false)
+					$('#addModal #addNewForm input[name="capacity"]').val(response.data.capacity);
 					// swal.fire("Doneosdflsdfsodfjo!", "It was succesfully deleted!", "success");
 					// datatable.ajax.reload();
 
@@ -179,27 +167,27 @@ var vehiclesDT = function () {
 			$('#addModal #update').show();
 
 			$.ajax({
-				url: "https://aa4f0a57.ngrok.io/api/Vehicle/GetVehicle/" + id,
+				url: "http://tatweer-api.ngrok.io/api/Vehicle/GetVehicle/" + id,
 				type: "GET",
 
 				headers: {
 					"Authorization": "Berear " + token
 				},
-				success: function (res) {
-					console.log(res)
+				success: function (response) {
+					console.log(response)
 					$('#addModal').modal('show');
 					// console.log(viewForm)
-					$('#addModal #addNewForm input[name="brand"]').val(res.data.brand);
-					$('#addModal #addNewForm input[name="model"]').val(res.data.model);
-					$('#addModal #addNewForm input[name="color"]').val(res.data.color);
-					$('#addModal #addNewForm input[name="plateNumber"]').val(res.data.plateNumber);
-					$('#addModal #addNewForm input[name="engineNumber"]').val(res.data.engineNumber);
-					$('#addModal #addNewForm input[name="chassisNumber"]').val(res.data.chassisNumber);
-					$('#addModal #addNewForm input[name="isAsset"]').prop("checked", res.data.isAsset ? true : false)
+					$('#addModal #addNewForm input[name="brand"]').val(response.data.brand);
+					$('#addModal #addNewForm input[name="model"]').val(response.data.model);
+					$('#addModal #addNewForm input[name="color"]').val(response.data.color);
+					$('#addModal #addNewForm input[name="plateNumber"]').val(response.data.plateNumber);
+					$('#addModal #addNewForm input[name="engineNumber"]').val(response.data.engineNumber);
+					$('#addModal #addNewForm input[name="chassisNumber"]').val(response.data.chassisNumber);
+					$('#addModal #addNewForm input[name="isAsset"]').prop("checked", response.data.isAsset ? true : false)
 					// $('#asset').val($(this).is(':checked'));
 
-					$('#addModal #addNewForm input[name="capacity"]').val(res.data.capacity);
-					$('#addModal #addNewForm input[name="id"]').val(res.data.id);
+					$('#addModal #addNewForm input[name="capacity"]').val(response.data.capacity);
+					$('#addModal #addNewForm input[name="id"]').val(response.data.id);
 					// swal.fire("Doneosdflsdfsodfjo!", "It was succesfully deleted!", "success");
 					// datatable.ajax.reload();
 
@@ -222,7 +210,40 @@ var vehiclesDT = function () {
 			e.preventDefault();
 			var btn = $(this);
 			var form = $('#addNewForm');
+			form.validate({
+				rules: {
+					brand: {
+						required: true
+					},
+					model: {
+						required: true
+					},
+					color: {
+						required: true
+					},
+					plateNumber: {
+						required: true
+					},
+					engineNumber: {
+						required: true
+					},
+					chassisNumber: {
+						required: true
+					},
+					capacity: {
+						required: true,
+						number: true
+					},
+					// vehicleLicense: {
+					// 	required: true
+					// },
 
+				}
+			});
+
+			if (!form.valid()) {
+				return;
+			}
 
 			var formData = $('#addNewForm').extractObject();
 
@@ -235,7 +256,7 @@ var vehiclesDT = function () {
 
 
 			form.ajaxSubmit({
-				url: "https://aa4f0a57.ngrok.io/api/Vehicle/AddVehicle",
+				url: "http://tatweer-api.ngrok.io/api/Vehicle/AddVehicle",
 				method: "POST",
 				data: {
 					...formData,
@@ -253,26 +274,68 @@ var vehiclesDT = function () {
 					// docCookies.setItem('access_token', response.access_token);
 					btn.removeClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', false);
 					console.log(response);
-					$('#addModal').modal('hide');
-					datatable.ajax.reload()
+					if (response.errorCode == 304) {
+						showErrorMsg(form, 'danger', response.message);
+
+					} else {
+
+						$('#addModal').modal('hide');
+						datatable.ajax.reload()
+					}
 				},
-				error: function (res) {
+				error: function (response) {
 					console.log(response);
-					showErrorMsg(form, 'danger', res.message);
+					showErrorMsg(form, 'danger', response.message);
 				}
 			});
 		});
+
 		$('#update').click(function (e) {
 			e.preventDefault();
 			var btn = $(this);
 			var form = $('#addNewForm');
+			form.validate({
+				rules: {
+					brand: {
+						required: true
+					},
+					model: {
+						required: true
+					},
+					color: {
+						required: true
+					},
+					plateNumber: {
+						required: true
+					},
+					engineNumber: {
+						required: true
+					},
+					chassisNumber: {
+						required: true
+					},
+					capacity: {
+						required: true,
+						number: true
+					},
+					// vehicleLicense: {
+					// 	required: true
+					// },
+
+				}
+			});
+
+			if (!form.valid()) {
+				return;
+			}
+
 
 
 			var formData = $('#addNewForm').extractObject();
 
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			form.ajaxSubmit({
-				url: "https://aa4f0a57.ngrok.io/api/Vehicle/UpdateVehicle",
+				url: "http://tatweer-api.ngrok.io/api/Vehicle/UpdateVehicle",
 				method: "POST",
 				data: {
 					...formData,
@@ -293,9 +356,9 @@ var vehiclesDT = function () {
 					$('#addModal').modal('hide');
 					datatable.ajax.reload()
 				},
-				error: function (res) {
+				error: function (response) {
 					console.log(response);
-					showErrorMsg(form, 'danger', res.message);
+					showErrorMsg(form, 'danger', response.message);
 				}
 			});
 		});

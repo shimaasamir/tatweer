@@ -5,37 +5,9 @@ var KTLoginGeneral = function () {
 
     var login = $('#kt_login');
     //start--convert form to json
-    $.fn.extractObject = function () {
-        var accum = {};
-        function add(accum, namev, value) {
-            if (namev.length == 1)
-                accum[namev[0]] = value;
-            else {
-                if (accum[namev[0]] == null)
-                    accum[namev[0]] = {};
-                add(accum[namev[0]], namev.slice(1), value);
-            }
-        };
-        this.find('input, textarea, select').each(function () {
-            add(accum, $(this).attr('name').split('.'), $(this).val());
-        });
-        return accum;
-    };
-    //end--convert form to json
-    var showErrorMsg = function (form, type, msg) {
-        var alert = $('<div class="alert alert-' + type + ' alert-dismissible" role="alert">\
-			<div class="alert-text">'+ msg + '</div>\
-			<div class="alert-close">\
-                <i class="flaticon2-cross kt-icon-sm" data-dismiss="alert"></i>\
-            </div>\
-		</div>');
 
-        form.find('.alert').remove();
-        alert.prependTo(form);
-        //alert.animateClass('fadeIn animated');
-        KTUtil.animateClass(alert[0], 'fadeIn animated');
-        alert.find('span').html(msg);
-    }
+    //end--convert form to json
+
 
 
     var handleSignInFormSubmit = function () {
@@ -64,12 +36,14 @@ var KTLoginGeneral = function () {
             btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 
             form.ajaxSubmit({
-                url: "https://aa4f0a57.ngrok.io/api/token",
+                url: "http://tatweer-api.ngrok.io/api/token",
                 method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
 
+                },
                 data: {
-                    // username: login.username,
-                    // password: login.password,
+                    // ...formData,
                     "grant_type": "2"
                 },
                 success: function (response, status, xhr, $form) {
@@ -78,34 +52,40 @@ var KTLoginGeneral = function () {
                     $.cookie("access_token", response.access_token, { expires: response.expires_in });
                     var token = $.cookie("access_token");
                     console.log(response)
-                    $.ajax({
-                        url: "https://aa4f0a57.ngrok.io/api/login",
-                        method: "POST",
-                        headers: {
-                            "Authorization": "Berear " + token
-                        },
-                        data: {
-                            ...formData,
-                            "grant_type": "1"
-                        },
-                        success: function (res) {
-                            $.cookie("user", JSON.stringify(res));
+                    if (response.access_token == null) {
+                        showErrorMsg(form, 'danger', "Please check your cridentials");
+                        btn.removeClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', false);
 
-                            window.location.href = "vehicles.html"
-                            console.log(res)
+                    } else {
 
-                        }
-                    })
-                    // window.location.href = "vehicles.html"
+                        $.ajax({
+                            url: "http://tatweer-api.ngrok.io/api/login",
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/x-www-form-urlencoded",
+                                "Authorization": "Berear " + token
+                            },
+                            data: {
+                                ...formData,
+                                "grant_type": "1"
+                            },
+                            success: function (response) {
+                                $.cookie("user", JSON.stringify(response));
 
-                    // btn.removeClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', false);
-                    // console.log( $.cookie("access_token"));
+                                window.location.href = "vehicles.html"
+                                console.log(response)
+
+                            },
+
+                        })
+                    }
+
                 },
 
-                error: function (res) {
-                    console.log(res);
+                error: function (response) {
+                    console.log(response);
 
-                    showErrorMsg(form, 'danger', res.message);
+                    showErrorMsg(form, 'danger', response.message);
 
                 }
             });

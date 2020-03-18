@@ -7,81 +7,19 @@ var driversDT = function () {
 	var _dt = new DataTableEntry(),
 		datatable, _status = 0,
 		_sId;
-	var arrows;
-	if (KTUtil.isRTL()) {
-		arrows = {
-			leftArrow: '<i class="la la-angle-right"></i>',
-			rightArrow: '<i class="la la-angle-left"></i>'
-		}
-	} else {
-		arrows = {
-			leftArrow: '<i class="la la-angle-left"></i>',
-			rightArrow: '<i class="la la-angle-right"></i>'
-		}
-	}
-	var loadAllRoles = function () {
-		roles = [];
-		$.ajax({
-			url: "https://aa4f0a57.ngrok.io/api/Role/GetAllRoles",
-			type: "GET",
 
-			headers: {
-				"Authorization": "Berear " + token
-			},
-			success: function (res) {
 
-				res.data.map(role => {
-					roles.push({ ...role, text: role.name })
-				})
-				console.log(roles)
-				$("#roles").select2({
-					placeholder: "Select a value",
-					data: roles
-				});
 
-				$('#addModal').modal('show');
 
-			},
-			error: function (xhr, ajaxOptions, thrownError) {
-				swal.fire("Error deleting!", "Please try again", "error");
-			}
-		})
 
-	};
-	$('.dateOfBirth').datepicker({
-		rtl: KTUtil.isRTL(),
-		todayHighlight: true,
-		orientation: "bottom left",
-		templates: arrows
-	});
-	$('#employee').change(function () {
-		// if($(this).is(":checked")) {
-		// 	// var returnVal = confirm("Are you sure?");
-		// 	$(this).attr("checked", false);
-		// }
-		$('#employee').val($(this).is(':checked'));
-		console.log($('#employee').val());
-	});
+
+
+
 	var licensePicURL = new KTAvatar('licensePicURL');
 	var picURL = new KTAvatar('picURL');
-	var roles = [];
+
 	//start--convert form to json
-	$.fn.extractObject = function () {
-		var accum = {};
-		function add(accum, namev, value) {
-			if (namev.length == 1)
-				accum[namev[0]] = value;
-			else {
-				if (accum[namev[0]] == null)
-					accum[namev[0]] = {};
-				add(accum[namev[0]], namev.slice(1), value);
-			}
-		};
-		this.find('input, textarea, select').each(function () {
-			add(accum, $(this).attr('name').split('.'), $(this).val());
-		});
-		return accum;
-	};
+
 	//end--convert form to json
 	// basic demo
 	var datatable;
@@ -105,7 +43,7 @@ var driversDT = function () {
 				}
 				return data;
 			},
-			'https://aa4f0a57.ngrok.io/api/Driver/GetAllDriversPaging', 'POST', {
+			'http://tatweer-api.ngrok.io/api/Driver/GetAllDriversPaging', 'POST', {
 			pagenumber: 1,
 			pageSize: 10
 		}, [{
@@ -146,17 +84,17 @@ var driversDT = function () {
 
 				if (result.value) {
 					$.ajax({
-						url: "https://aa4f0a57.ngrok.io/api/Driver/UpdateDRiver",
+						url: "http://tatweer-api.ngrok.io/api/Driver/UpdateDRiver",
 						type: "POST",
 						data: {
 							ID: id,
-							isActive: false
+							statusId: 4
 						},
 						headers: {
 							"Authorization": "Berear " + token
 						},
-						success: function (res) {
-							console.log(res)
+						success: function (response) {
+							console.log(response)
 							swal.fire("Done!", "It was succesfully deleted!", "success");
 							datatable.ajax.reload();
 
@@ -175,30 +113,29 @@ var driversDT = function () {
 			$(".modal-title").text("View Driver");
 			$('#addModal #addNewForm input').prop("disabled", true);
 			$('#addModal #addNew').hide();
-			loadAllRoles()
+
 			$.ajax({
-				url: "https://aa4f0a57.ngrok.io/api/Driver/GetDriver/" + id,
+				url: "http://tatweer-api.ngrok.io/api/Driver/GetDriver/" + id,
 				type: "GET",
 
 				headers: {
 					"Authorization": "Berear " + token
 				},
-				success: function (res) {
-					console.log(res)
+				success: function (response) {
+					console.log(response)
 					$('#addModal').modal('show');
-					console.log(viewForm)
-					$('#addModal #addNewForm input[name="firstName"]').val(res.data.firstName);
-					$('#addModal #addNewForm input[name="lastName"]').val(res.data.lastName);
-					$('#addModal #addNewForm input[name="dateOfBirth"]').val(res.data.dateOfBirth);
-					$('#addModal #addNewForm input[name="email"]').val(res.data.email);
-					$('#addModal #addNewForm input[name="password"]').val(res.data.password);
-					$('#roles').val(res.data.roleID);
-					$('#roles').trigger('change');
 
-					$('#licensePicURL').css('background-image', 'url(' + res.data.licensePicURL + ')');
-					$('#picURL').css('background-image', 'url(' + res.data.picURL + ')');
-					$('#addModal #addNewForm input[name="isEmployee]').prop("checked", res.data.هisEmployee ? true : false)
-					$('#addModal #addNewForm input[name="id"]').val(res.data.id);
+					$('#addModal #addNewForm input[name="firstName"]').val(response.data.firstName);
+					$('#addModal #addNewForm input[name="lastName"]').val(response.data.lastName);
+					$('#addModal #addNewForm input[name="dateOfBirth"]').val(response.data.dateOfBirth);
+					$('#addModal #addNewForm input[name="email"]').val(response.data.email);
+					$('#addModal #addNewForm input[name="password"]').val(response.data.password);
+
+
+					$('#licensePicURL').css('background-image', 'url(' + response.data.licensePicURL + ')');
+					$('#picURL').css('background-image', 'url(' + response.data.picURL + ')');
+					$('#addModal #addNewForm #employee').prop('checked', response.data.isEmployee)
+					$('#addModal #addNewForm input[name="id"]').val(response.data.id);
 					// swal.fire("Doneosdflsdfsodfjo!", "It was succesfully deleted!", "success");
 					// datatable.reload();
 
@@ -211,11 +148,13 @@ var driversDT = function () {
 		});
 
 		$('body').on('click', '#showAddNewModal', function (e) {
-			loadAllRoles();
+			;
 			$(".modal-title").text("Add Driver");
 			$('#addModal #addNewForm input').prop("disabled", false);
 			$('#addModal #addNew').show();
 			$('#addModal #update').hide();
+			$('#addModal').modal('show');
+
 			let viewForm = $('#addModal #addNewForm')
 			viewForm.each(function () {
 				this.reset();
@@ -223,10 +162,39 @@ var driversDT = function () {
 
 		});
 		$('#addNew').click(function (e) {
-			e.preventDefault();
+			// e.preventDefault();
 			var btn = $(this);
 			var form = $('#addNewForm');
 
+
+			form.validate({
+				rules: {
+					firstName: {
+						required: true
+					},
+					email: {
+						required: true,
+						email: true
+					},
+					lastName: {
+						required: true
+					},
+					dateOfBirth: {
+						required: true
+					},
+
+					password: {
+						required: true
+					},
+
+
+
+				}
+			});
+
+			if (!form.valid()) {
+				return;
+			}
 
 			var formData = $('#addNewForm').extractObject();
 
@@ -234,7 +202,7 @@ var driversDT = function () {
 			console.log(formData);
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			form.ajaxSubmit({
-				url: "https://aa4f0a57.ngrok.io/api/Driver/AddDriver",
+				url: "http://tatweer-api.ngrok.io/api/Driver/AddDriver",
 				method: "POST",
 				data: {
 					...formData,
@@ -255,20 +223,27 @@ var driversDT = function () {
 					// docCookies.setItem('access_token', response.access_token);
 					btn.removeClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', false);
 					console.log(response);
-					$('#addModal').modal('hide');
-					datatable.ajax.reload()
+					if (response.errorCode == 304) {
+						showErrorMsg(form, 'danger', "This email is already registered");
+
+					} else {
+
+						$('#addModal').modal('hide');
+						datatable.ajax.reload()
+					}
+					// $('#addModal').modal('hide');
 				},
-				error: function (res) {
+				error: function (response) {
 					console.log(response);
-					showErrorMsg(form, 'danger', res.message);
+					showErrorMsg(form, 'danger', response.message);
 				}
 			});
 		});
 		$('body').on('click', 'a.edit', function (e) {
 			let id = e.currentTarget.dataset.id;
 			let viewForm = $('#addModal #addNewForm')
-			// console.log(e.currentTarget.dataset.id);
-			loadAllRoles();
+				// console.log(e.currentTarget.dataset.id);
+				;
 
 			$(".modal-title").text("Edit Driver");
 			$('#addModal #addNewForm input').prop("disabled", false);
@@ -276,28 +251,28 @@ var driversDT = function () {
 			$('#addModal #update').show();
 
 			$.ajax({
-				url: "https://aa4f0a57.ngrok.io/api/Driver/GetDriver/" + id,
+				url: "http://tatweer-api.ngrok.io/api/Driver/GetDriver/" + id,
 				type: "GET",
 
 				headers: {
 					"Authorization": "Berear " + token
 				},
-				success: function (res) {
-					console.log(res)
+				success: function (response) {
+					console.log(response)
 					$('#addModal').modal('show');
 					// console.log(viewForm)
-					$('#addModal #addNewForm input[name="firstName"]').val(res.data.firstName);
-					$('#addModal #addNewForm input[name="lastName"]').val(res.data.lastName);
-					$('#addModal #addNewForm input[name="dateOfBirth"]').val(res.data.dateOfBirth);
-					$('#addModal #addNewForm input[name="email"]').val(res.data.email);
-					$('#addModal #addNewForm input[name="password"]').val(res.data.password);
-					$('#roles').val(res.data.roleID);
+					$('#addModal #addNewForm input[name="firstName"]').val(response.data.firstName);
+					$('#addModal #addNewForm input[name="lastName"]').val(response.data.lastName);
+					$('#addModal #addNewForm input[name="dateOfBirth"]').val(response.data.dateOfBirth);
+					$('#addModal #addNewForm input[name="email"]').val(response.data.email);
+					$('#addModal #addNewForm input[name="password"]').val(response.data.password);
+					$('#roles').val(response.data.roleID);
 					$('#roles').trigger('change');
 
-					$('#licensePicURL').css('background-image', 'url(' + res.data.licensePicURL + ')');
-					$('#picURL').css('background-image', 'url(' + res.data.picURL + ')');
-					$('#addModal #addNewForm input[name="isEmployee]').prop("checked", res.data.هisEmployee ? true : false)
-					$('#addModal #addNewForm input[name="id"]').val(res.data.id);
+					$('#licensePicURL').css('background-image', 'url(' + response.data.licensePicURL + ')');
+					$('#picURL').css('background-image', 'url(' + response.data.picURL + ')');
+					$('#addModal #addNewForm #employee').prop('checked', response.data.isEmployee)
+					$('#addModal #addNewForm input[name="id"]').val(response.data.id);
 					// swal.fire("Doneosdflsdfsodfjo!", "It was succesfully deleted!", "success");
 					// datatable.reload();
 
@@ -310,24 +285,38 @@ var driversDT = function () {
 		});
 		$('#update').click(function (e) {
 			e.preventDefault();
+
+
 			var btn = $(this);
 			var form = $('#addNewForm');
+			form.validate({
+				rules: {
+					firstName: {
+						required: true
+					},
+					email: {
+						required: true,
+						email: true
+					},
+					lastName: {
+						required: true
+					},
+					dateOfBirth: {
+						required: true
+					},
+				}
+			});
+
+			if (!form.valid()) {
+				return;
+			}
 
 
 			var formData = $('#addNewForm').extractObject();
-			// formData = {
-			// 	...formData,
-			// 	isAsset: $('#addModal #addNewForm input[name="isAsset"]:checked').length > 0,
-			// 	isActive: true,
-			// 	createDate: new Date(),
-			// 	modifyDate: new Date(),
-			// 	modifyBy: 1
-			// }
-			// console.log("formData");
-			// console.log(formData);
+
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			form.ajaxSubmit({
-				url: "https://aa4f0a57.ngrok.io/api/Driver/UpdateDriver",
+				url: "http://tatweer-api.ngrok.io/api/Driver/UpdateDriver",
 				method: "POST",
 				data: {
 					...formData,
@@ -348,12 +337,20 @@ var driversDT = function () {
 					// docCookies.setItem('access_token', response.access_token);
 					btn.removeClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', false);
 					console.log(response);
-					$('#addModal').modal('hide');
-					datatable.ajax.reload()
+					if (response.errorCode == 304) {
+						showErrorMsg(form, 'danger', "This email is already registered");
+
+					} else {
+
+						$('#addModal').modal('hide');
+						datatable.ajax.reload()
+					}
+					// $('#addModal').modal('hide');
+					// datatable.ajax.reload()
 				},
-				error: function (res) {
+				error: function (response) {
 					console.log(response);
-					showErrorMsg(form, 'danger', res.message);
+					showErrorMsg(form, 'danger', response.message);
 				}
 			});
 		});

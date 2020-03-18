@@ -1,11 +1,11 @@
 "use strict";
 
 // Class definition
-var KTFlotchartsDemo = function() {
+var KTFlotchartsDemo = function () {
 
 	// Private functions
 
-	var demo1 = function() {
+	var demo1 = function () {
 		var data = [];
 		var totalPoints = 250;
 
@@ -24,7 +24,7 @@ var KTFlotchartsDemo = function() {
 			// zip the generated y values with the x values
 			var res = [];
 			for (var i = 0; i < data.length; ++i) {
-				res.push([i, data[i]]);
+				response.push([i, data[i]]);
 			}
 
 			return res;
@@ -97,7 +97,7 @@ var KTFlotchartsDemo = function() {
 		});
 	}
 
-	var demo2 = function() {
+	var demo2 = function () {
 		function randValue() {
 			return (Math.floor(Math.random() * (1 + 40 - 20))) + 20;
 		}
@@ -238,7 +238,7 @@ var KTFlotchartsDemo = function() {
 		}
 
 		var previousPoint = null;
-		$("#chart_2").bind("plothover", function(event, pos, item) {
+		$("#chart_2").bind("plothover", function (event, pos, item) {
 			$("#x").text(pos.x.toFixed(2));
 			$("#y").text(pos.y.toFixed(2));
 
@@ -259,7 +259,7 @@ var KTFlotchartsDemo = function() {
 		});
 	}
 
-	var demo3 = function() {
+	var demo3 = function () {
 		var sin = [],
 			cos = [];
 		for (var i = 0; i < 14; i += 0.1) {
@@ -305,7 +305,7 @@ var KTFlotchartsDemo = function() {
 		});
 
 		var legends = $("#kt_flotcharts_3 .legendLabel");
-		legends.each(function() {
+		legends.each(function () {
 			// fix the widths so they don't jump around
 			$(this).css('width', $(this).width());
 		});
@@ -341,13 +341,13 @@ var KTFlotchartsDemo = function() {
 			}
 		}
 
-		$("#kt_flotcharts_3").bind("plothover", function(event, pos, item) {
+		$("#kt_flotcharts_3").bind("plothover", function (event, pos, item) {
 			latestPosition = pos;
 			if (!updateLegendTimeout) updateLegendTimeout = setTimeout(updateLegend, 50);
 		});
 	}
 
-	var demo4 = function() {
+	var demo4 = function () {
 		var data = [];
 		var totalPoints = 250;
 
@@ -366,7 +366,7 @@ var KTFlotchartsDemo = function() {
 			// zip the generated y values with the x values
 			var res = [];
 			for (var i = 0; i < data.length; ++i) {
-				res.push([i, data[i]]);
+				response.push([i, data[i]]);
 			}
 
 			return res;
@@ -394,7 +394,7 @@ var KTFlotchartsDemo = function() {
 				min: 0,
 				max: 100,
 				tickColor: "#eee",
-				tickFormatter: function(v) {
+				tickFormatter: function (v) {
 					return v + "%";
 				}
 			},
@@ -420,7 +420,7 @@ var KTFlotchartsDemo = function() {
 		update();
 	}
 
-	var demo5 = function() {
+	var demo5 = function () {
 		var d1 = [];
 		for (var i = 0; i <= 10; i += 1)
 			d1.push([i, parseInt(Math.random() * 30)]);
@@ -463,39 +463,39 @@ var KTFlotchartsDemo = function() {
 					},
 					shadowSize: 0
 				}], {
-					colors: [KTApp.getStateColor("danger"), KTApp.getStateColor("brand")],
-					series: {
-						stack: stack,
-						lines: {
-							show: lines,
-							fill: true,
-							steps: steps,
-							lineWidth: 0, // in pixels
-						},
-						bars: {
-							show: bars,
-							barWidth: 0.5,
-							lineWidth: 0, // in pixels
-							shadowSize: 0,
-							align: 'center'
-						}
+				colors: [KTApp.getStateColor("danger"), KTApp.getStateColor("brand")],
+				series: {
+					stack: stack,
+					lines: {
+						show: lines,
+						fill: true,
+						steps: steps,
+						lineWidth: 0, // in pixels
 					},
-					grid: {
-						tickColor: "#eee",
-						borderColor: "#eee",
-						borderWidth: 1
+					bars: {
+						show: bars,
+						barWidth: 0.5,
+						lineWidth: 0, // in pixels
+						shadowSize: 0,
+						align: 'center'
 					}
+				},
+				grid: {
+					tickColor: "#eee",
+					borderColor: "#eee",
+					borderWidth: 1
 				}
+			}
 			);
 		}
 
-		$(".stackControls input").click(function(e) {
+		$(".stackControls input").click(function (e) {
 			e.preventDefault();
 			stack = $(this).val() == "With stacking" ? true : null;
 			plotWithOptions();
 		});
 
-		$(".graphControls input").click(function(e) {
+		$(".graphControls input").click(function (e) {
 			e.preventDefault();
 			bars = $(this).val().indexOf("Bars") != -1;
 			lines = $(this).val().indexOf("Lines") != -1;
@@ -506,7 +506,7 @@ var KTFlotchartsDemo = function() {
 		plotWithOptions();
 	}
 
-	var demo6 = function() {
+	var demo6 = function () {
 		// bar chart:
 		var data = GenerateSeries(0);
 
@@ -555,7 +555,7 @@ var KTFlotchartsDemo = function() {
 		}], options);
 	}
 
-	var demo7 = function() {
+	var demo7 = function () {
 		// horizontal bar chart:
 
 		var data1 = [
@@ -590,13 +590,13 @@ var KTFlotchartsDemo = function() {
 		$.plot($("#kt_flotcharts_7"), [data1], options);
 	}
 
-	var demo8 = function() {
+	var demo8 = function () {
 		var data = [
-            {label: "CSS", data: 10, color:  KTApp.getStateColor("brand")},
-            {label: "HTML5", data: 40, color:  KTApp.getStateColor("success")},
-            {label: "PHP", data: 30, color:  KTApp.getStateColor("danger")},
-            {label: "Angular", data: 20, color:  KTApp.getStateColor("warning")}
-        ];
+			{ label: "CSS", data: 10, color: KTApp.getStateColor("brand") },
+			{ label: "HTML5", data: 40, color: KTApp.getStateColor("success") },
+			{ label: "PHP", data: 30, color: KTApp.getStateColor("danger") },
+			{ label: "Angular", data: 20, color: KTApp.getStateColor("warning") }
+		];
 
 		$.plot($("#kt_flotcharts_8"), data, {
 			series: {
@@ -607,14 +607,14 @@ var KTFlotchartsDemo = function() {
 		});
 	}
 
-	var demo9 = function() {
+	var demo9 = function () {
 		var data = [
-            {label: "USA", data: 10, color:  KTApp.getStateColor("brand")},
-            {label: "Germany", data: 25, color:  KTApp.getStateColor("success")},
-            {label: "Norway", data: 30, color:  KTApp.getStateColor("danger")},
-            {label: "Malaysia", data: 15, color:  KTApp.getStateColor("warning")},
-            {label: "France", data: 10, color:  KTApp.getStateColor("info")}
-        ];
+			{ label: "USA", data: 10, color: KTApp.getStateColor("brand") },
+			{ label: "Germany", data: 25, color: KTApp.getStateColor("success") },
+			{ label: "Norway", data: 30, color: KTApp.getStateColor("danger") },
+			{ label: "Malaysia", data: 15, color: KTApp.getStateColor("warning") },
+			{ label: "France", data: 10, color: KTApp.getStateColor("info") }
+		];
 
 		$.plot($("#kt_flotcharts_9"), data, {
 			series: {
@@ -628,14 +628,14 @@ var KTFlotchartsDemo = function() {
 		});
 	}
 
-	var demo10 = function() {
+	var demo10 = function () {
 		var data = [
-            {label: "Google", data: 20, color:  KTApp.getStateColor("brand")},
-            {label: "Twitter", data: 35, color:  KTApp.getStateColor("success")},
-            {label: "Linkedin", data: 20, color:  KTApp.getStateColor("danger")},
-            {label: "Instagram", data: 25, color:  KTApp.getStateColor("warning")},
-            {label: "Facebook", data: 10, color:  KTApp.getStateColor("info")}
-        ];
+			{ label: "Google", data: 20, color: KTApp.getStateColor("brand") },
+			{ label: "Twitter", data: 35, color: KTApp.getStateColor("success") },
+			{ label: "Linkedin", data: 20, color: KTApp.getStateColor("danger") },
+			{ label: "Instagram", data: 25, color: KTApp.getStateColor("warning") },
+			{ label: "Facebook", data: 10, color: KTApp.getStateColor("info") }
+		];
 
 		$.plot($("#kt_flotcharts_10"), data, {
 			series: {
@@ -645,7 +645,7 @@ var KTFlotchartsDemo = function() {
 					label: {
 						show: true,
 						radius: 1,
-						formatter: function(label, series) {
+						formatter: function (label, series) {
 							return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
 						},
 						background: {
@@ -660,14 +660,14 @@ var KTFlotchartsDemo = function() {
 		});
 	}
 
-	var demo11 = function() {
+	var demo11 = function () {
 		var data = [
-            {label: "Vue", data: 13, color:  KTApp.getStateColor("danger")},
-            {label: "Angular", data: 25, color:  KTApp.getStateColor("success")},
-            {label: "React", data: 15, color:  KTApp.getStateColor("brand")},
-            {label: "Ember", data: 10, color:  KTApp.getStateColor("warning")},
-            {label: "Backbone", data: 8, color:  KTApp.getStateColor("info")}
-        ];
+			{ label: "Vue", data: 13, color: KTApp.getStateColor("danger") },
+			{ label: "Angular", data: 25, color: KTApp.getStateColor("success") },
+			{ label: "React", data: 15, color: KTApp.getStateColor("brand") },
+			{ label: "Ember", data: 10, color: KTApp.getStateColor("warning") },
+			{ label: "Backbone", data: 8, color: KTApp.getStateColor("info") }
+		];
 
 		$.plot($("#kt_flotcharts_11"), data, {
 			series: {
@@ -677,7 +677,7 @@ var KTFlotchartsDemo = function() {
 					label: {
 						show: true,
 						radius: 1,
-						formatter: function(label, series) {
+						formatter: function (label, series) {
 							return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
 						},
 						background: {
@@ -694,7 +694,7 @@ var KTFlotchartsDemo = function() {
 
 	return {
 		// public functions
-		init: function() {
+		init: function () {
 			// default charts
 			demo1();
 			demo2();
@@ -713,6 +713,6 @@ var KTFlotchartsDemo = function() {
 	};
 }();
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
 	KTFlotchartsDemo.init();
 });

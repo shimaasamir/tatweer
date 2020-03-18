@@ -8,17 +8,9 @@ var clientsDT = function () {
 		datatable, _status = 0,
 		_sId;
 	var arrows;
-	if (KTUtil.isRTL()) {
-		arrows = {
-			leftArrow: '<i class="la la-angle-right"></i>',
-			rightArrow: '<i class="la la-angle-left"></i>'
-		}
-	} else {
-		arrows = {
-			leftArrow: '<i class="la la-angle-left"></i>',
-			rightArrow: '<i class="la la-angle-right"></i>'
-		}
-	}
+
+
+
 	$('.dateOfBirth').datepicker({
 		rtl: KTUtil.isRTL(),
 		todayHighlight: true,
@@ -29,22 +21,7 @@ var clientsDT = function () {
 	var picURL = new KTAvatar('picURL');
 	var roles = [];
 	//start--convert form to json
-	$.fn.extractObject = function () {
-		var accum = {};
-		function add(accum, namev, value) {
-			if (namev.length == 1)
-				accum[namev[0]] = value;
-			else {
-				if (accum[namev[0]] == null)
-					accum[namev[0]] = {};
-				add(accum[namev[0]], namev.slice(1), value);
-			}
-		};
-		this.find('input, textarea, select').each(function () {
-			add(accum, $(this).attr('name').split('.'), $(this).val());
-		});
-		return accum;
-	};
+
 	//end--convert form to json
 	// basic demo
 	var datatable;
@@ -68,7 +45,7 @@ var clientsDT = function () {
 				}
 				return data;
 			},
-			'https://aa4f0a57.ngrok.io/api/Client/GetAllClientsPaging', 'POST', {
+			'http://tatweer-api.ngrok.io/api/Client/GetAllClientsPaging', 'POST', {
 			pagenumber: 1,
 			pageSize: 10
 		}, [{
@@ -112,7 +89,7 @@ var clientsDT = function () {
 
 				if (result.value) {
 					$.ajax({
-						url: "https://aa4f0a57.ngrok.io/api/Client/UpdateClient",
+						url: "http://tatweer-api.ngrok.io/api/Client/UpdateClient",
 						type: "POST",
 						data: {
 							ID: id,
@@ -121,8 +98,8 @@ var clientsDT = function () {
 						headers: {
 							"Authorization": "Berear " + token
 						},
-						success: function (res) {
-							console.log(res)
+						success: function (response) {
+							console.log(response)
 							swal.fire("Done!", "It was succesfully deleted!", "success");
 							datatable.ajax.reload();
 
@@ -143,21 +120,21 @@ var clientsDT = function () {
 			$('#addModal #addNew').hide();
 
 			$.ajax({
-				url: "https://aa4f0a57.ngrok.io/api/Client/GetClient/" + id,
+				url: "http://tatweer-api.ngrok.io/api/Client/GetClient/" + id,
 				type: "GET",
 
 				headers: {
 					"Authorization": "Berear " + token
 				},
-				success: function (res) {
-					console.log(res)
+				success: function (response) {
+					console.log(response)
 					$('#addModal').modal('show');
 					console.log(viewForm)
-					$('#addModal #addNewForm input[name="name"]').val(res.data.name);
-					$('#addModal #addNewForm input[name="address"]').val(res.data.address);
-					$('#addModal #addNewForm input[name="email"]').val(res.data.email);
-					$('#addModal #addNewForm input[name="mobile"]').val(res.data.mobile);
-					$('#addModal #addNewForm input[name="fax"]').val(res.data.fax);
+					$('#addModal #addNewForm input[name="name"]').val(response.data.name);
+					$('#addModal #addNewForm input[name="address"]').val(response.data.address);
+					$('#addModal #addNewForm input[name="email"]').val(response.data.email);
+					$('#addModal #addNewForm input[name="mobile"]').val(response.data.mobile);
+					$('#addModal #addNewForm input[name="fax"]').val(response.data.fax);
 					// datatable.ajax.reload();
 
 				},
@@ -169,38 +146,15 @@ var clientsDT = function () {
 		});
 
 		$('body').on('click', '#showAddNewModal', function (e) {
-			roles = [];
-			$.ajax({
-				url: "https://aa4f0a57.ngrok.io/api/Role/GetAllRoles",
-				type: "GET",
-
-				headers: {
-					"Authorization": "Berear " + token
-				},
-				success: function (res) {
-
-					res.data.map(role => {
-						roles.push({ ...role, text: role.name })
-					})
-					console.log(roles)
-					$("#roles").select2({
-						placeholder: "Select a value",
-						data: roles
-					});
-					$(".modal-title").text("Add Client");
-					$('#addModal #addNewForm input').prop("disabled", false);
-					$('#addModal #addNew').show();
-					$('#addModal #update').hide();
-					$('#addModal').modal('show');
-					let viewForm = $('#addModal #addNewForm')
-					viewForm.each(function () {
-						this.reset();
-					});
-				},
-				error: function (xhr, ajaxOptions, thrownError) {
-					swal.fire("Error deleting!", "Please try again", "error");
-				}
-			})
+			$(".modal-title").text("Add Client");
+			$('#addModal #addNewForm input').prop("disabled", false);
+			$('#addModal #addNew').show();
+			$('#addModal #update').hide();
+			$('#addModal').modal('show');
+			let viewForm = $('#addModal #addNewForm')
+			viewForm.each(function () {
+				this.reset();
+			});
 
 		});
 		$('#addNew').click(function (e) {
@@ -209,11 +163,41 @@ var clientsDT = function () {
 			var form = $('#addNewForm');
 
 
+			form.validate({
+				rules: {
+					name: {
+						required: true
+					},
+					address: {
+						required: true
+					},
+					email: {
+						required: true,
+						email: true
+					},
+					mobile: {
+						required: true
+					},
+
+					password: {
+						required: true
+					},
+
+
+
+				}
+			});
+
+			if (!form.valid()) {
+				return;
+			}
+
+
 			var formData = $('#addNewForm').extractObject();
 			console.log(formData);
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			form.ajaxSubmit({
-				url: "https://aa4f0a57.ngrok.io/api/Client/AddClient",
+				url: "http://tatweer-api.ngrok.io/api/Client/AddClient",
 				method: "POST",
 				data: {
 					...formData,
@@ -229,12 +213,16 @@ var clientsDT = function () {
 					// docCookies.setItem('access_token', response.access_token);
 					btn.removeClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', false);
 					console.log(response);
-					$('#addModal').modal('hide');
-					datatable.ajax.reload()
+					if (response.errorCode == 304) {
+						showErrorMsg(form, 'danger', "This email is already registered");
+					} else {
+						$('#addModal').modal('hide');
+						datatable.ajax.reload()
+					}
 				},
-				error: function (res) {
+				error: function (response) {
 					console.log(response);
-					showErrorMsg(form, 'danger', res.message);
+					showErrorMsg(form, 'danger', response.message);
 				}
 			});
 		});
@@ -248,22 +236,22 @@ var clientsDT = function () {
 			$('#addModal #update').show();
 
 			$.ajax({
-				url: "https://aa4f0a57.ngrok.io/api/Client/GetClient/" + id,
+				url: "http://tatweer-api.ngrok.io/api/Client/GetClient/" + id,
 				type: "GET",
 
 				headers: {
 					"Authorization": "Berear " + token
 				},
-				success: function (res) {
-					console.log(res)
+				success: function (response) {
+					console.log(response)
 					$('#addModal').modal('show');
 					// console.log(viewForm)
-					$('#addModal #addNewForm input[name="name"]').val(res.data.name);
-					$('#addModal #addNewForm input[name="address"]').val(res.data.address);
-					$('#addModal #addNewForm input[name="email"]').val(res.data.email);
-					$('#addModal #addNewForm input[name="mobile"]').val(res.data.mobile);
-					$('#addModal #addNewForm input[name="fax"]').val(res.data.fax);
-					$('#addModal #addNewForm input[name="id"]').val(res.data.id);
+					$('#addModal #addNewForm input[name="name"]').val(response.data.name);
+					$('#addModal #addNewForm input[name="address"]').val(response.data.address);
+					$('#addModal #addNewForm input[name="email"]').val(response.data.email);
+					$('#addModal #addNewForm input[name="mobile"]').val(response.data.mobile);
+					$('#addModal #addNewForm input[name="fax"]').val(response.data.fax);
+					$('#addModal #addNewForm input[name="id"]').val(response.data.id);
 					// swal.fire("Doneosdflsdfsodfjo!", "It was succesfully deleted!", "success");
 					datatable.ajax.reload();
 
@@ -280,6 +268,34 @@ var clientsDT = function () {
 			var form = $('#addNewForm');
 
 
+			form.validate({
+				rules: {
+					name: {
+						required: true
+					},
+					address: {
+						required: true
+					},
+					email: {
+						required: true,
+						email: true
+					},
+					mobile: {
+						required: true
+					},
+
+
+
+
+
+				}
+			});
+
+			if (!form.valid()) {
+				return;
+			}
+
+
 			var formData = $('#addNewForm').extractObject();
 			// formData = {
 			// 	...formData,
@@ -293,7 +309,7 @@ var clientsDT = function () {
 			console.log(formData);
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			form.ajaxSubmit({
-				url: "https://aa4f0a57.ngrok.io/api/Client/UpdateClient",
+				url: "http://tatweer-api.ngrok.io/api/Client/UpdateClient",
 				method: "POST",
 				data: {
 					...formData,
@@ -312,9 +328,9 @@ var clientsDT = function () {
 					$('#addModal').modal('hide');
 					datatable.ajax.reload()
 				},
-				error: function (res) {
+				error: function (response) {
 					console.log(response);
-					showErrorMsg(form, 'danger', res.message);
+					showErrorMsg(form, 'danger', response.message);
 				}
 			});
 		});
