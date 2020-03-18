@@ -34120,7 +34120,7 @@ body {
     min-height: 50px;
     position: relative;
     z-index: 1;
-    background-color: #1a1a27;
+    background-color: #fff;
     -webkit-box-shadow: 0px 1px 9px -3px rgba(0, 0, 0, 0.1);
     box-shadow: 0px 1px 9px -3px rgba(0, 0, 0, 0.1); }
     .kt-header__topbar--mobile-on .kt-header-mobile {
@@ -34142,6 +34142,8 @@ body {
       -webkit-box-pack: start;
       -ms-flex-pack: start;
       justify-content: flex-start; }
+      .kt-header-mobile .kt-header-mobile__logo img {
+        height: 40px; }
     .kt-header-mobile .kt-header-mobile__toolbar {
       display: -webkit-box;
       display: -ms-flexbox;
