@@ -436,7 +436,7 @@ var routesDT = function () {
 			let id = e.currentTarget.dataset.id;
 			// console.log(e.currentTarget.dataset.id);	
 			$('#checkPointsModal').modal('show');
-			$("#checkPointsModal .modal-title").text("Manage Check/ Assembly pooints ");
+			$("#checkPointsModal .modal-title").text("Manage Check/ Assembly points ");
 
 			$('#checkid').val(id);
 			if (checkPointsdatatable) checkPointsdatatable.destroy()

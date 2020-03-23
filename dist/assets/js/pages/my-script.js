@@ -3,6 +3,7 @@ var arrows, roles;
 $('#logOut').click(function (e) {
     // e.perventDefault();
     $.cookie('access_token', null);
+    console.log($.cookie("access_token"))
     window.location.href = "login.html"
 
 });
@@ -102,30 +103,42 @@ $('.checkboxInput').change(function () {
 
 function GetAddress(lat, lng, input) {
     var latlng = new google.maps.LatLng(lat, lng);
-    var geocoder = geocoder = new google.maps.Geocoder();
-    // var service = new google.maps.places.PlacesService();
+    var geocoder = new google.maps.Geocoder();
+    // var geocoder = new google.maps.Geocoder();
+
+    var placeId, map, request;
+    var service = new google.maps.places.PlacesService();
     // var request = {
     //     placeId: 'ChIJN1t_tDeuEmsRUsoyG83frY4',
     //     fields: ['name', 'formatted_address', 'place_id', 'geometry']
     // };
-    // service.getDetails(request, function (place, status) {
-    //     if (status === google.maps.places.PlacesServiceStatus.OK) {
-    //         console.log(place.name)
-    //         // google.maps.event.addListener(marker, 'click', function () {
-    //         //     infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
-    //         //         'Place ID: ' + place.place_id + '<br>' +
-    //         //         place.formatted_address + '</div>');
-    //         //     infowindow.open(map, this);
-    //         // });
-    //     }
-    // });
     geocoder.geocode({ 'latLng': latlng }, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
             if (results[1]) {
-                console.log(results[1])
+                console.log(results)
+                placeId = results[1].place_id;
                 input.val(results[1].formatted_address)
                 // alert("Location: " + results[1].formatted_address);
+                request = {
+                    placeId: results[1].place_id,
+                    fields: ['name', 'formatted_address', 'place_id', 'geometry']
+                }
+                service.getDetails(request, function (place, status) {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        console.log(place.name)
+                        // google.maps.event.addListener(marker, 'click', function () {
+                        //     infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
+                        //         'Place ID: ' + place.place_id + '<br>' +
+                        //         place.formatted_address + '</div>');
+                        //     infowindow.open(map, this);
+                        // });
+                    }
+                });
             }
         }
     });
+
+
+
+
 }

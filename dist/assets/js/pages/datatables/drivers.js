@@ -7,14 +7,6 @@ var driversDT = function () {
 	var _dt = new DataTableEntry(),
 		datatable, _status = 0,
 		_sId;
-
-
-
-
-
-
-
-
 	var licensePicURL = new KTAvatar('licensePicURL');
 	var picURL = new KTAvatar('picURL');
 
