@@ -4,6 +4,7 @@
 var routesDT = function () {
 	// Private functions
 	var token = $.cookie("access_token");
+
 	var _dt = new DataTableEntry(),
 		datatable, _status = 0,
 		_sId, clients, arrows, checkPointsdatatable = $('#checkPointsTable').DataTable();
@@ -58,7 +59,7 @@ var routesDT = function () {
 	var loadAllClients = function (modal) {
 		clients = [];
 		$.ajax({
-			url: "http://196.221.197.203:5252/api/Client/GetAllClients",
+			url: "http://tatweer-api.ngrok.io/api/Client/GetAllClients",
 			type: "GET",
 
 			headers: {
@@ -138,7 +139,7 @@ var routesDT = function () {
 				searching: false,
 				paging: false,
 				ajax: {
-					url: "http://196.221.197.203:5252/api/Route/GetAllRoutes",
+					url: "http://tatweer-api.ngrok.io/api/Route/GetAllRoutes",
 					type: "POST",
 					data: {
 						clientId: clientID
@@ -197,11 +198,11 @@ var routesDT = function () {
 
 				if (result.value) {
 					$.ajax({
-						url: "http://196.221.197.203:5252/api/Route/UpdateRoute",
+						url: "http://tatweer-api.ngrok.io/api/Route/UpdateRoute",
 						type: "POST",
 						data: {
 							ID: id,
-							isActive: false
+							statusId: 4
 						},
 						headers: {
 							"Authorization": "Berear " + token
@@ -230,7 +231,7 @@ var routesDT = function () {
 			loadAllClients(true)
 
 			$.ajax({
-				url: "http://196.221.197.203:5252/api/Route/GetRoute/" + id,
+				url: "http://tatweer-api.ngrok.io/api/Route/GetRoute/" + id,
 				type: "GET",
 
 				headers: {
@@ -285,7 +286,7 @@ var routesDT = function () {
 			console.log(formData);
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			form.ajaxSubmit({
-				url: "http://196.221.197.203:5252/api/Route/AddRoute",
+				url: "http://tatweer-api.ngrok.io/api/Route/AddRoute",
 				method: "POST",
 				data: {
 					...formData,
@@ -324,7 +325,7 @@ var routesDT = function () {
 			$('#addModal #update').show();
 
 			$.ajax({
-				url: "http://196.221.197.203:5252/api/Route/GetRoute/" + id,
+				url: "http://tatweer-api.ngrok.io/api/Route/GetRoute/" + id,
 				type: "GET",
 
 				headers: {
@@ -357,7 +358,7 @@ var routesDT = function () {
 			console.log(formData)
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			form.ajaxSubmit({
-				url: "http://196.221.197.203:5252/api/Route/UpdateRoute",
+				url: "http://tatweer-api.ngrok.io/api/Route/UpdateRoute",
 				method: "POST",
 				data: {
 					...formData,
@@ -397,7 +398,7 @@ var routesDT = function () {
 				serverSide: false,
 				searching: false,
 				ajax: {
-					url: "http://196.221.197.203:5252/api/CheckPoints/GetAllCheckPoints",
+					url: "http://tatweer-api.ngrok.io/api/CheckPoints/GetAllCheckPoints",
 					type: "POST",
 					data: {
 						routeId: id
@@ -442,7 +443,7 @@ var routesDT = function () {
 			console.log(formData);
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			formpoint.ajaxSubmit({
-				url: "http://196.221.197.203:5252/api/CheckPoints/AddCheckPoint",
+				url: "http://tatweer-api.ngrok.io/api/CheckPoints/AddCheckPoint",
 				method: "POST",
 				data: {
 					...formData,
@@ -488,11 +489,11 @@ var routesDT = function () {
 
 				if (result.value) {
 					$.ajax({
-						url: "http://196.221.197.203:5252/api/CheckPoints/UpdateCheckPoint",
+						url: "http://tatweer-api.ngrok.io/api/CheckPoints/UpdateCheckPoint",
 						type: "POST",
 						data: {
 							ID: id,
-							isActive: false
+							statusId: 4
 						},
 						headers: {
 							"Authorization": "Berear " + token

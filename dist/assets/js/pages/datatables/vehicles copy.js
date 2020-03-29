@@ -34,7 +34,7 @@ var vehiclesDT = function () {
 					read: {
 						// /api/token
 						// url: 'https://keenthemes.com/metronic/tools/preview/api/datatables/demos/default.php',
-						url: '	http://196.221.197.203:5252/api/Vehicle/GetAllVehicles',
+						url: '	http://tatweer-api.ngrok.io/api/Vehicle/GetAllVehicles',
 						// sample custom headers
 						method: "GET",
 						timeout: 3000,
@@ -158,11 +158,11 @@ var vehiclesDT = function () {
 
 				if (result.value) {
 					$.ajax({
-						url: "http://196.221.197.203:5252/api/Vehicle/UpdateVehicle",
+						url: "http://tatweer-api.ngrok.io/api/Vehicle/UpdateVehicle",
 						type: "POST",
 						data: {
 							id: id,
-							isActive: false
+							statusId: 4
 						},
 						headers: {
 							"Authorization": "Berear " + token
@@ -189,7 +189,7 @@ var vehiclesDT = function () {
 			$('#addModal #addNew').hide();
 
 			$.ajax({
-				url: "http://196.221.197.203:5252/api/Vehicle/GetVehicle/" + id,
+				url: "http://tatweer-api.ngrok.io/api/Vehicle/GetVehicle/" + id,
 				type: "GET",
 
 				headers: {
@@ -240,7 +240,7 @@ var vehiclesDT = function () {
 			$('#addModal #update').show();
 
 			$.ajax({
-				url: "http://196.221.197.203:5252/api/Vehicle/GetVehicle/" + id,
+				url: "http://tatweer-api.ngrok.io/api/Vehicle/GetVehicle/" + id,
 				type: "GET",
 
 				headers: {
@@ -289,7 +289,7 @@ var vehiclesDT = function () {
 			// console.log(formData);
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			form.ajaxSubmit({
-				url: "http://196.221.197.203:5252/api/Vehicle/AddVehicle",
+				url: "http://tatweer-api.ngrok.io/api/Vehicle/AddVehicle",
 				method: "POST",
 				data: {
 					...formData,
@@ -335,7 +335,7 @@ var vehiclesDT = function () {
 			// console.log(formData);
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			form.ajaxSubmit({
-				url: "http://196.221.197.203:5252/api/Vehicle/UpdateVehicle",
+				url: "http://tatweer-api.ngrok.io/api/Vehicle/UpdateVehicle",
 				method: "POST",
 				data: {
 					...formData,

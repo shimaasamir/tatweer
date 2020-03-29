@@ -1,9 +1,11 @@
 "use strict";
 // Class definition
 
-var driversDT = function () {
+var passengersDT = function () {
 	// Private functions
 	var token = $.cookie("access_token");
+	var user = JSON.parse($.cookie("user"))
+	console.log(user)
 	var _dt = new DataTableEntry(),
 		datatable, _status = 0,
 		_sId;
@@ -19,35 +21,7 @@ var driversDT = function () {
 			rightArrow: '<i class="la la-angle-right"></i>'
 		}
 	}
-	var loadAllRoles = function () {
-		roles = [];
-		$.ajax({
-			url: "http://tatweer-api.ngrok.io/api/Role/GetAllRoles",
-			type: "GET",
 
-			headers: {
-				"Authorization": "Berear " + token
-			},
-			success: function (res) {
-
-				res.data.map(role => {
-					roles.push({ ...role, text: role.name })
-				})
-				console.log(roles)
-				$("#roles").select2({
-					placeholder: "Select a value",
-					data: roles
-				});
-
-				$('#addModal').modal('show');
-
-			},
-			error: function (xhr, ajaxOptions, thrownError) {
-				swal.fire("Error deleting!", "Please try again", "error");
-			}
-		})
-
-	};
 	$('.dateOfBirth').datepicker({
 		rtl: KTUtil.isRTL(),
 		todayHighlight: true,
@@ -77,7 +51,7 @@ var driversDT = function () {
 	//end--convert form to json
 	// basic demo
 	var datatable;
-	var drivers = function () {
+	var passengers = function () {
 		if (datatable) datatable.destroy();
 		datatable = _dt.bindDataTable('#dataTable', [0, 1, 2, 3, 4, 5],
 			function (data, a, b, c) {
@@ -97,9 +71,10 @@ var driversDT = function () {
 				}
 				return data;
 			},
-			'http://tatweer-api.ngrok.io/api/Driver/GetAllDriversPaging', 'POST', {
+			'http://tatweer-api.ngrok.io/api/Passenger/GetAllPassenger', 'POST', {
 			pagenumber: 1,
-			pageSize: 10
+			pageSize: 10,
+			clientId: user.id
 		}, [{
 			"data": "id"
 		},
@@ -138,7 +113,7 @@ var driversDT = function () {
 
 				if (result.value) {
 					$.ajax({
-						url: "http://tatweer-api.ngrok.io/api/Driver/UpdateDRiver",
+						url: "http://tatweer-api.ngrok.io/api/User/updateStatus",
 						type: "POST",
 						data: {
 							ID: id,
@@ -151,7 +126,6 @@ var driversDT = function () {
 							console.log(res)
 							swal.fire("Done!", "It was succesfully deleted!", "success");
 							datatable.ajax.reload();
-
 						},
 						error: function (xhr, ajaxOptions, thrownError) {
 							swal.fire("Error deleting!", "Please try again", "error");
@@ -164,12 +138,12 @@ var driversDT = function () {
 			let id = e.currentTarget.dataset.id;
 			let viewForm = $('#addModal #addNewForm')
 			// console.log(e.currentTarget.dataset.id);
-			$(".modal-title").text("View Driver");
+			$(".modal-title").text("View Passenger");
 			$('#addModal #addNewForm input').prop("disabled", true);
-			$('#addModal #addNew').hide();
-			loadAllRoles()
+			$('#addModal #addNew,#addModal #update').hide();
+
 			$.ajax({
-				url: "http://tatweer-api.ngrok.io/api/Driver/GetDriver/" + id,
+				url: "http://tatweer-api.ngrok.io/api/Passenger/GetPassenger/" + id,
 				type: "GET",
 
 				headers: {
@@ -179,18 +153,19 @@ var driversDT = function () {
 					console.log(res)
 					$('#addModal').modal('show');
 					console.log(viewForm)
-					$('#addModal #addNewForm input[name="firstName"]').val(res.data.firstName);
-					$('#addModal #addNewForm input[name="lastName"]').val(res.data.lastName);
-					$('#addModal #addNewForm input[name="dateOfBirth"]').val(res.data.dateOfBirth);
-					$('#addModal #addNewForm input[name="email"]').val(res.data.email);
-					$('#addModal #addNewForm input[name="password"]').val(res.data.password);
-					$('#roles').val(res.data.roleID);
-					$('#roles').trigger('change');
+					$('#addModal #addNewForm input[name="firstName"]').val(res.data[0].firstName);
+					$('#addModal #addNewForm input[name="lastName"]').val(res.data[0].lastName);
+					$('#addModal #addNewForm input[name="dateOfBirth"]').val(res.data[0].dateOfBirth);
+					$('#addModal #addNewForm input[name="email"]').val(res.data[0].email);
+					$('#addModal #addNewForm input[name="password"]').val(res.data[0].password);
+					$('#addModal #addNewForm input[name="workid"]').val(res.data[0].workid);
+					// $('#roles').val(res.data[0].roleID);
+					// $('#roles').trigger('change');
 
-					$('#licensePicURL').css('background-image', 'url(' + res.data.licensePicURL + ')');
-					$('#picURL').css('background-image', 'url(' + res.data.picURL + ')');
-					$('#addModal #addNewForm input[name="isEmployee]').prop("checked", res.data.هisEmployee ? true : false)
-					$('#addModal #addNewForm input[name="id"]').val(res.data.id);
+					// $('#licensePicURL').css('background-image', 'url(' + res.data[0].licensePicURL + ')');
+					$('#picURL').css('background-image', 'url(' + res.data[0].picURL + ')');
+					// $('#addModal #addNewForm input[name="isEmployee]').prop("checked", res.data[0].هisEmployee ? true : false)
+					$('#addModal #addNewForm input[name="id"]').val(res.data[0].id);
 					// swal.fire("Doneosdflsdfsodfjo!", "It was succesfully deleted!", "success");
 					// datatable.reload();
 
@@ -203,11 +178,13 @@ var driversDT = function () {
 		});
 
 		$('body').on('click', '#showAddNewModal', function (e) {
-			loadAllRoles();
-			$(".modal-title").text("Add Driver");
+			;
+			$(".modal-title").text("Add Passenger");
 			$('#addModal #addNewForm input').prop("disabled", false);
 			$('#addModal #addNew').show();
 			$('#addModal #update').hide();
+			$('#addModal').modal('show');
+
 			let viewForm = $('#addModal #addNewForm')
 			viewForm.each(function () {
 				this.reset();
@@ -219,6 +196,37 @@ var driversDT = function () {
 			var btn = $(this);
 			var form = $('#addNewForm');
 
+			form.validate({
+				rules: {
+					firstName: {
+						required: true
+					},
+					email: {
+						required: true,
+						email: true
+					},
+					lastName: {
+						required: true
+					},
+					dateOfBirth: {
+						required: true
+					},
+					workid: {
+						required: true
+					},
+
+					password: {
+						required: true
+					},
+
+
+
+				}
+			});
+
+			if (!form.valid()) {
+				return;
+			}
 
 			var formData = $('#addNewForm').extractObject();
 
@@ -226,11 +234,12 @@ var driversDT = function () {
 			console.log(formData);
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			form.ajaxSubmit({
-				url: "http://tatweer-api.ngrok.io/api/Driver/AddDriver",
+				url: "http://tatweer-api.ngrok.io/api/Passenger/AddPassenger",
 				method: "POST",
 				data: {
 					...formData,
-					licensePicURL: "",
+					roleId: 4,
+					clientId: user.id,
 					picURL: "",
 					isActive: true,
 					createDate: new Date(),
@@ -257,16 +266,16 @@ var driversDT = function () {
 		$('body').on('click', 'a.edit', function (e) {
 			let id = e.currentTarget.dataset.id;
 			let viewForm = $('#addModal #addNewForm')
-			// console.log(e.currentTarget.dataset.id);
-			loadAllRoles();
+				// console.log(e.currentTarget.dataset.id);
+				;
 
-			$(".modal-title").text("Edit Driver");
+			$(".modal-title").text("Edit Passenger");
 			$('#addModal #addNewForm input').prop("disabled", false);
 			$('#addModal #addNew').hide();
 			$('#addModal #update').show();
 
 			$.ajax({
-				url: "http://tatweer-api.ngrok.io/api/Driver/GetDriver/" + id,
+				url: "http://tatweer-api.ngrok.io/api/Passenger/GetPassenger/" + id,
 				type: "GET",
 
 				headers: {
@@ -276,18 +285,19 @@ var driversDT = function () {
 					console.log(res)
 					$('#addModal').modal('show');
 					// console.log(viewForm)
-					$('#addModal #addNewForm input[name="firstName"]').val(res.data.firstName);
-					$('#addModal #addNewForm input[name="lastName"]').val(res.data.lastName);
-					$('#addModal #addNewForm input[name="dateOfBirth"]').val(res.data.dateOfBirth);
-					$('#addModal #addNewForm input[name="email"]').val(res.data.email);
-					$('#addModal #addNewForm input[name="password"]').val(res.data.password);
-					$('#roles').val(res.data.roleID);
-					$('#roles').trigger('change');
+					$('#addModal #addNewForm input[name="firstName"]').val(res.data[0].firstName);
+					$('#addModal #addNewForm input[name="lastName"]').val(res.data[0].lastName);
+					$('#addModal #addNewForm input[name="dateOfBirth"]').val(res.data[0].dateOfBirth);
+					$('#addModal #addNewForm input[name="email"]').val(res.data[0].email);
+					$('#addModal #addNewForm input[name="password"]').val(res.data[0].password);
+					$('#addModal #addNewForm input[name="workid"]').val(res.data[0].workid);
+					// $('#roles').val(res.data[0].roleID);
+					// $('#roles').trigger('change');
 
-					$('#licensePicURL').css('background-image', 'url(' + res.data.licensePicURL + ')');
-					$('#picURL').css('background-image', 'url(' + res.data.picURL + ')');
-					$('#addModal #addNewForm input[name="isEmployee]').prop("checked", res.data.هisEmployee ? true : false)
-					$('#addModal #addNewForm input[name="id"]').val(res.data.id);
+					// $('#licensePicURL').css('background-image', 'url(' + res.data[0].licensePicURL + ')');
+					$('#picURL').css('background-image', 'url(' + res.data[0].picURL + ')');
+					// $('#addModal #addNewForm input[name="isEmployee]').prop("checked", res.data[0].هisEmployee ? true : false)
+					$('#addModal #addNewForm input[name="id"]').val(res.data[0].id);
 					// swal.fire("Doneosdflsdfsodfjo!", "It was succesfully deleted!", "success");
 					// datatable.reload();
 
@@ -317,13 +327,14 @@ var driversDT = function () {
 			// console.log(formData);
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			form.ajaxSubmit({
-				url: "http://tatweer-api.ngrok.io/api/Driver/UpdateDriver",
+				url: "http://tatweer-api.ngrok.io/api/passenger/UpdatePassenger",
 				method: "POST",
 				data: {
 					...formData,
-					isEmployee: $('#addModal #addNewForm input[name="isEmployee"]:checked').length > 0,
-					licensePicURL: "",
+					// isEmployee: $('#addModal #addNewForm input[name="isEmployee"]:checked').length > 0,
+					roleId: 4,
 					picURL: "",
+					clientId: user.id,
 					isActive: true,
 					createDate: new Date(),
 					modifyDate: new Date(),
@@ -351,11 +362,11 @@ var driversDT = function () {
 	return {
 		// public functions
 		init: function () {
-			drivers();
+			passengers();
 		},
 	};
 }();
 
 jQuery(document).ready(function () {
-	driversDT.init();
+	passengersDT.init();
 });

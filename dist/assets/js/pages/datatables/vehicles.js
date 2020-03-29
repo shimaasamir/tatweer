@@ -5,7 +5,8 @@
 var vehiclesDT = function () {
 	// Private functions
 	var token = $.cookie("access_token");
-	// console.log(token);
+	var user = JSON.parse($.cookie("user"));
+	console.log(user);
 	var _dt = new DataTableEntry(),
 		datatable, _status = 0,
 		_sId;
@@ -51,7 +52,7 @@ var vehiclesDT = function () {
 				}
 				return data;
 			},
-			'http://196.221.197.203:5252/api/Vehicle/GetAllVehiclesPaging', 'POST', {
+			'http://tatweer-api.ngrok.io/api/Vehicle/GetAllVehiclesPaging', 'POST', {
 			pagenumber: 1,
 			pageSize: 10
 		}, [{
@@ -97,11 +98,11 @@ var vehiclesDT = function () {
 
 				if (result.value) {
 					$.ajax({
-						url: "http://196.221.197.203:5252/api/Vehicle/UpdateVehicle",
+						url: "http://tatweer-api.ngrok.io/api/Vehicle/UpdateVehicle",
 						type: "POST",
 						data: {
 							id: id,
-							isActive: false
+							statusId: 4
 						},
 						headers: {
 							"Authorization": "Berear " + token
@@ -128,7 +129,7 @@ var vehiclesDT = function () {
 			$('#addModal #addNew').hide();
 
 			$.ajax({
-				url: "http://196.221.197.203:5252/api/Vehicle/GetVehicle/" + id,
+				url: "http://tatweer-api.ngrok.io/api/Vehicle/GetVehicle/" + id,
 				type: "GET",
 				headers: {
 					"Authorization": "Berear " + token
@@ -178,7 +179,7 @@ var vehiclesDT = function () {
 			$('#addModal #update').show();
 
 			$.ajax({
-				url: "http://196.221.197.203:5252/api/Vehicle/GetVehicle/" + id,
+				url: "http://tatweer-api.ngrok.io/api/Vehicle/GetVehicle/" + id,
 				type: "GET",
 
 				headers: {
@@ -217,7 +218,7 @@ var vehiclesDT = function () {
 
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			form.ajaxSubmit({
-				url: "http://196.221.197.203:5252/api/Vehicle/AddVehicle",
+				url: "http://tatweer-api.ngrok.io/api/Vehicle/AddVehicle",
 				method: "POST",
 				data: {
 					...formData,
@@ -254,7 +255,7 @@ var vehiclesDT = function () {
 
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			form.ajaxSubmit({
-				url: "http://196.221.197.203:5252/api/Vehicle/UpdateVehicle",
+				url: "http://tatweer-api.ngrok.io/api/Vehicle/UpdateVehicle",
 				method: "POST",
 				data: {
 					...formData,

@@ -22,7 +22,7 @@ var driversDT = function () {
 	var loadAllRoles = function () {
 		roles = [];
 		$.ajax({
-			url: "http://196.221.197.203:5252/api/Role/GetAllRoles",
+			url: "http://tatweer-api.ngrok.io/api/Role/GetAllRoles",
 			type: "GET",
 
 			headers: {
@@ -97,7 +97,7 @@ var driversDT = function () {
 				}
 				return data;
 			},
-			'http://196.221.197.203:5252/api/Driver/GetAllDriversPaging', 'POST', {
+			'http://tatweer-api.ngrok.io/api/Driver/GetAllDriversPaging', 'POST', {
 			pagenumber: 1,
 			pageSize: 10
 		}, [{
@@ -138,11 +138,11 @@ var driversDT = function () {
 
 				if (result.value) {
 					$.ajax({
-						url: "http://196.221.197.203:5252/api/Driver/UpdateDRiver",
+						url: "http://tatweer-api.ngrok.io/api/Driver/UpdateDRiver",
 						type: "POST",
 						data: {
 							ID: id,
-							isActive: false
+							statusId: 4
 						},
 						headers: {
 							"Authorization": "Berear " + token
@@ -169,7 +169,7 @@ var driversDT = function () {
 			$('#addModal #addNew').hide();
 
 			$.ajax({
-				url: "http://196.221.197.203:5252/api/Driver/GetDriver/" + id,
+				url: "http://tatweer-api.ngrok.io/api/Driver/GetDriver/" + id,
 				type: "GET",
 
 				headers: {
@@ -225,7 +225,7 @@ var driversDT = function () {
 			console.log(formData);
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			form.ajaxSubmit({
-				url: "http://196.221.197.203:5252/api/Driver/AddDriver",
+				url: "http://tatweer-api.ngrok.io/api/Driver/AddDriver",
 				method: "POST",
 				data: {
 					...formData,
@@ -265,7 +265,7 @@ var driversDT = function () {
 			$('#addModal #update').show();
 
 			$.ajax({
-				url: "http://196.221.197.203:5252/api/Driver/GetDriver/" + id,
+				url: "http://tatweer-api.ngrok.io/api/Driver/GetDriver/" + id,
 				type: "GET",
 
 				headers: {
@@ -315,7 +315,7 @@ var driversDT = function () {
 			// console.log(formData);
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			form.ajaxSubmit({
-				url: "http://196.221.197.203:5252/api/Driver/UpdateDriver",
+				url: "http://tatweer-api.ngrok.io/api/Driver/UpdateDriver",
 				method: "POST",
 				data: {
 					...formData,

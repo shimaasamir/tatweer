@@ -33,7 +33,7 @@ var checkPointsDT = function () {
 	var loadAllRoutes = function () {
 		routes = [];
 		$.ajax({
-			url: "http://196.221.197.203:5252/api/Route/GetAllRoutes",
+			url: "http://tatweer-api.ngrok.io/api/Route/GetAllRoutes",
 			type: "GET",
 
 			headers: {
@@ -100,7 +100,7 @@ var checkPointsDT = function () {
 			}
 			return data;
 		},
-			'http://196.221.197.203:5252/api/CheckPoints/GetAllCheckPointsPaging', 'POST', {
+			'http://tatweer-api.ngrok.io/api/CheckPoints/GetAllCheckPointsPaging', 'POST', {
 			pagenumber: 1,
 			pageSize: 10
 		}, [{
@@ -138,11 +138,11 @@ var checkPointsDT = function () {
 
 				if (result.value) {
 					$.ajax({
-						url: "http://196.221.197.203:5252/api/CheckPoints/UpdateCheckPoint",
+						url: "http://tatweer-api.ngrok.io/api/CheckPoints/UpdateCheckPoint",
 						type: "POST",
 						data: {
 							ID: id,
-							isActive: false
+							statusId: 4
 						},
 						headers: {
 							"Authorization": "Berear " + token
@@ -170,7 +170,7 @@ var checkPointsDT = function () {
 			loadAllRoutes()
 
 			$.ajax({
-				url: "http://196.221.197.203:5252/api/CheckPoints/GetCheckPoint/" + id,
+				url: "http://tatweer-api.ngrok.io/api/CheckPoints/GetCheckPoint/" + id,
 				type: "GET",
 
 				headers: {
@@ -222,7 +222,7 @@ var checkPointsDT = function () {
 			console.log(formData);
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			form.ajaxSubmit({
-				url: "http://196.221.197.203:5252/api/CheckPoints/AddCheckPoint",
+				url: "http://tatweer-api.ngrok.io/api/CheckPoints/AddCheckPoint",
 				method: "POST",
 				data: {
 					...formData,
@@ -260,7 +260,7 @@ var checkPointsDT = function () {
 			$('#addModal #update').show();
 
 			$.ajax({
-				url: "http://196.221.197.203:5252/api/CheckPoints/GetCheckPoint/" + id,
+				url: "http://tatweer-api.ngrok.io/api/CheckPoints/GetCheckPoint/" + id,
 				type: "GET",
 
 				headers: {
@@ -297,7 +297,7 @@ var checkPointsDT = function () {
 			console.log(formData)
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			form.ajaxSubmit({
-				url: "http://196.221.197.203:5252/api/CheckPoints/UpdateCheckPoint",
+				url: "http://tatweer-api.ngrok.io/api/CheckPoints/UpdateCheckPoint",
 				method: "POST",
 				data: {
 					...formData,

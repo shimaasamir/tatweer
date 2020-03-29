@@ -68,7 +68,7 @@ var clientsDT = function () {
 				}
 				return data;
 			},
-			'http://196.221.197.203:5252/api/Client/GetAllClientsPaging', 'POST', {
+			'http://tatweer-api.ngrok.io/api/Client/GetAllClientsPaging', 'POST', {
 			pagenumber: 1,
 			pageSize: 10
 		}, [{
@@ -112,11 +112,11 @@ var clientsDT = function () {
 
 				if (result.value) {
 					$.ajax({
-						url: "http://196.221.197.203:5252/api/Client/UpdateClient",
+						url: "http://tatweer-api.ngrok.io/api/Client/UpdateClient",
 						type: "POST",
 						data: {
 							ID: id,
-							isActive: false
+							statusId: 4
 						},
 						headers: {
 							"Authorization": "Berear " + token
@@ -143,7 +143,7 @@ var clientsDT = function () {
 			$('#addModal #addNew').hide();
 
 			$.ajax({
-				url: "http://196.221.197.203:5252/api/Client/GetClient/" + id,
+				url: "http://tatweer-api.ngrok.io/api/Client/GetClient/" + id,
 				type: "GET",
 
 				headers: {
@@ -171,7 +171,7 @@ var clientsDT = function () {
 		$('body').on('click', '#showAddNewModal', function (e) {
 			roles = [];
 			$.ajax({
-				url: "http://196.221.197.203:5252/api/Role/GetAllRoles",
+				url: "http://tatweer-api.ngrok.io/api/Role/GetAllRoles",
 				type: "GET",
 
 				headers: {
@@ -223,7 +223,7 @@ var clientsDT = function () {
 			console.log(formData);
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			form.ajaxSubmit({
-				url: "http://196.221.197.203:5252/api/Client/AddClient",
+				url: "http://tatweer-api.ngrok.io/api/Client/AddClient",
 				method: "POST",
 				data: {
 					...formData,
@@ -257,7 +257,7 @@ var clientsDT = function () {
 			$('#addModal #update').show();
 
 			$.ajax({
-				url: "http://196.221.197.203:5252/api/Client/GetClient/" + id,
+				url: "http://tatweer-api.ngrok.io/api/Client/GetClient/" + id,
 				type: "GET",
 
 				headers: {
@@ -302,7 +302,7 @@ var clientsDT = function () {
 			console.log(formData);
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			form.ajaxSubmit({
-				url: "http://196.221.197.203:5252/api/Client/UpdateClient",
+				url: "http://tatweer-api.ngrok.io/api/Client/UpdateClient",
 				method: "POST",
 				data: {
 					...formData,

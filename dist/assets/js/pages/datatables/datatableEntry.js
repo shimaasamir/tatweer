@@ -16,6 +16,7 @@ function DataTableEntry() {
             processing: true,
             serverSide: true,
             columnDefs: [{
+
                 searchable: false,
                 sortable: false,
                 targets: targets,
@@ -45,7 +46,7 @@ function DataTableEntry() {
                     // "Content-Type": "application/x-www-form-urlencoded"
                 },
                 complete: function (httpObj, textStatus) {
-                    console.log(httpObj)
+                    // console.log(httpObj)
                     if (httpObj.status == 401) {
                         window.location.href = '/login.html';
                     }
@@ -148,7 +149,7 @@ function DataTableEntry() {
                 // "Content-Type": "application/x-www-form-urlencoded"
             },
             complete: function (httpObj, textStatus) {
-                console.log(httpObj)
+                // console.log(httpObj)
 
                 if (httpObj.status == 401) {
                     window.location.href = '/login.html';
