@@ -105,6 +105,7 @@ var KTLoginGeneral = function () {
 
 
 
+
 // Class Initialization
 jQuery(document).ready(function () {
     KTLoginGeneral.init();

@@ -229,9 +229,8 @@ var routesDT = function () {
 					$('#addModal #addNewForm input[name="endlongitude"]').val(response.data.endlongitude);
 					$('#clients').val(response.data.clientID);
 					$('#clients').trigger('change');
-					GetAddress(response.data.startLatitude, response.data.startLongitude, $('#addModal #addNewForm input[name="startPoint"]'))
-					GetAddress(response.data.endLatitude, response.data.endLongitude, $('#addModal #addNewForm input[name="endPoint"]'))
-
+					$('#addModal #addNewForm input[name="startName"]').val(response.data.startName);
+					$('#addModal #addNewForm input[name="endName"]').val(response.data.endName);
 					$('#addModal #addNewForm input[name="id"]').val(response.data.id);
 					// swal.fire("Doneosdflsdfsodfjo!", "It was succesfully deleted!", "success");
 					// datatable.reload();
@@ -294,8 +293,7 @@ var routesDT = function () {
 				return;
 			}
 			var formData = $('#addNewForm').extractObject();
-			delete formData.startPoint;
-			delete formData.endPoint;
+
 			delete formData.id;
 			console.log(formData);
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
@@ -351,9 +349,9 @@ var routesDT = function () {
 					$('#addModal #addNewForm input[name="startLongitude"]').val(response.data.startLongitude);
 					$('#addModal #addNewForm input[name="endLatitude"]').val(response.data.endLatitude);
 					$('#addModal #addNewForm input[name="endlongitude"]').val(response.data.endlongitude);
+					$('#addModal #addNewForm input[name="startName"]').val(response.data.startName);
+					$('#addModal #addNewForm input[name="endName"]').val(response.data.endName);
 					$('#clients').val(response.data.clientID);
-					GetAddress(response.data.startLatitude, response.data.startLongitude, $('#addModal #addNewForm input[name="startPoint"]'))
-					GetAddress(response.data.endLatitude, response.data.endLongitude, $('#addModal #addNewForm input[name="endPoint"]'))
 					$('#clients').trigger('change');
 					$('#addModal #addNewForm input[name="id"]').val(response.data.id);
 					$('#addModal').modal('show');
