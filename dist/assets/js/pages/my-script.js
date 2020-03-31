@@ -4,7 +4,7 @@ $('#logOut').click(function (e) {
     // e.perventDefault();
     $.cookie('access_token', null);
     console.log($.cookie("access_token"))
-    window.location.href = "login.html"
+    window.location.href = "index.html"
 
 });
 var showErrorMsg = function (form, type, msg) {
