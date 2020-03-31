@@ -67,6 +67,14 @@ var routesDT = function () {
 					clients.push({ ...client, text: client.name })
 				})
 				console.log(clients)
+				// $("#clients").select2({
+				// 	placeholder: "Select a value",
+				// 	data: clients
+				// })
+				// $("#clientsModal").select2({
+				// 	placeholder: "Select a value",
+				// 	data: clients
+				// });
 				if (modal) {
 					$("#clientsModal").select2({
 						placeholder: "Select a value",
@@ -78,6 +86,7 @@ var routesDT = function () {
 						data: clients
 					});
 				}
+
 
 
 
@@ -227,8 +236,8 @@ var routesDT = function () {
 					$('#addModal #addNewForm input[name="startLongitude"]').val(response.data.startLongitude);
 					$('#addModal #addNewForm input[name="endLatitude"]').val(response.data.endLatitude);
 					$('#addModal #addNewForm input[name="endlongitude"]').val(response.data.endlongitude);
-					$('#clients').val(response.data.clientID);
-					$('#clients').trigger('change');
+					$('#clientsModal').val(response.data.clientId);
+					$('#clientsModal').trigger('change');
 					$('#addModal #addNewForm input[name="startName"]').val(response.data.startName);
 					$('#addModal #addNewForm input[name="endName"]').val(response.data.endName);
 					$('#addModal #addNewForm input[name="id"]').val(response.data.id);
@@ -351,8 +360,8 @@ var routesDT = function () {
 					$('#addModal #addNewForm input[name="endlongitude"]').val(response.data.endlongitude);
 					$('#addModal #addNewForm input[name="startName"]').val(response.data.startName);
 					$('#addModal #addNewForm input[name="endName"]').val(response.data.endName);
-					$('#clients').val(response.data.clientID);
-					$('#clients').trigger('change');
+					$('#clientsModal').val(response.data.clientId);
+					$('#clientsModal').trigger('change');
 					$('#addModal #addNewForm input[name="id"]').val(response.data.id);
 					$('#addModal').modal('show');
 
