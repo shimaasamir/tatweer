@@ -171,72 +171,7 @@ var routesDT = function () {
 
 
 		});
-		$('body').on('click', '#update', function (e) {
-			console.log("update action")
-			// e.preventDefault();
-			var btn = $(this);
-			var form = $('#addNewForm');
-			form.validate({
-				rules: {
-					routeName: {
-						required: true
-					},
-					startLatitude: {
-						required: true
-					},
-					startLongitude: {
-						required: true
-					},
-					endLatitude: {
-						required: true
-					},
-					endLongitude: {
-						required: true
-					},
-					clientId: {
-						required: true
-					},
-					distance: {
-						required: true
-					},
-					cost: {
-						required: true
-					}
-				}
-			});
-			if (!form.valid()) {
-				return;
-			}
-			var formData = $('#addNewForm').extractObject();
-			console.log(formData)
-			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
-			form.ajaxSubmit({
-				url: "http://tatweer-api.ngrok.io/api/Route/UpdateRoute",
-				method: "POST",
-				data: {
-					...formData,
-					isActive: true,
-					createDate: new Date(),
-					modifyDate: new Date(),
-					modifyBy: 1
-				},
-				headers: {
-					"Authorization": "Berear " + token
-				},
-				success: function (response) {
-					// similate 2s delay
-					// docCookies.setItem('access_token', response.access_token);
-					btn.removeClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', false);
-					console.log(response);
-					$('#addModal').modal('hide');
-					datatable.ajax.reload()
-				},
-				error: function (response) {
-					console.log(r); es
-					showErrorMsg(form, 'danger', response.message);
-				}
-			});
-		});
+
 		// Delete
 		$('body').on('click', 'a.delete', function (e) {
 			let id = e.currentTarget.dataset.id;
@@ -305,8 +240,6 @@ var routesDT = function () {
 					$('#clientsModal').trigger('change');
 					$('#addModal #addNewForm input[name="startName"]').val(response.data.startName);
 					$('#addModal #addNewForm input[name="endName"]').val(response.data.endName);
-					$('#addModal #addNewForm input[name="cost"]').val(response.data.cost);
-					$('#addModal #addNewForm input[name="distance"]').val(response.data.distance);
 					$('#addModal #addNewForm input[name="id"]').val(response.data.id);
 					// swal.fire("Doneosdflsdfsodfjo!", "It was succesfully deleted!", "success");
 					// datatable.reload();
@@ -357,12 +290,6 @@ var routesDT = function () {
 						required: true
 					},
 					clientId: {
-						required: true
-					},
-					distance: {
-						required: true
-					},
-					cost: {
 						required: true
 					},
 
@@ -433,8 +360,6 @@ var routesDT = function () {
 					$('#addModal #addNewForm input[name="endlongitude"]').val(response.data.endlongitude);
 					$('#addModal #addNewForm input[name="startName"]').val(response.data.startName);
 					$('#addModal #addNewForm input[name="endName"]').val(response.data.endName);
-					$('#addModal #addNewForm input[name="cost"]').val(response.data.cost);
-					$('#addModal #addNewForm input[name="distance"]').val(response.data.distance);
 					$('#clientsModal').val(response.data.clientId);
 					$('#clientsModal').trigger('change');
 					$('#addModal #addNewForm input[name="id"]').val(response.data.id);
@@ -448,7 +373,71 @@ var routesDT = function () {
 			})
 
 		});
+		$('#update').click(function (e) {
+			e.preventDefault();
+			var btn = $(this);
+			var form = $('#addNewForm');
 
+			form.validate({
+				rules: {
+					routeName: {
+						required: true
+					},
+					startLatitude: {
+						required: true
+					},
+					startLongitude: {
+						required: true
+					},
+					endLatitude: {
+						required: true
+					},
+					endLongitude: {
+						required: true
+					},
+					clientId: {
+						required: true
+					},
+
+
+
+				}
+			});
+
+			if (!form.valid()) {
+				return;
+			}
+
+			var formData = $('#addNewForm').extractObject();
+			console.log(formData)
+			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
+			form.ajaxSubmit({
+				url: "http://tatweer-api.ngrok.io/api/Route/UpdateRoute",
+				method: "POST",
+				data: {
+					...formData,
+					isActive: true,
+					createDate: new Date(),
+					modifyDate: new Date(),
+					modifyBy: 1
+				},
+				headers: {
+					"Authorization": "Berear " + token
+				},
+				success: function (response) {
+					// similate 2s delay
+					// docCookies.setItem('access_token', response.access_token);
+					btn.removeClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', false);
+					console.log(response);
+					$('#addModal').modal('hide');
+					datatable.ajax.reload()
+				},
+				error: function (response) {
+					console.log(r); es
+					showErrorMsg(form, 'danger', response.message);
+				}
+			});
+		});
 		//view
 		$('body').on('click', 'a.points', function (e) {
 			let id = e.currentTarget.dataset.id;
@@ -500,7 +489,7 @@ var routesDT = function () {
 
 
 
-		// add new 
+		// add new
 		$('body').on('click', '#addNewCheckPoint', function (e) {
 			e.preventDefault();
 			var btn = $(this);
@@ -590,6 +579,5 @@ var routesDT = function () {
 }();
 
 jQuery(document).ready(function () {
-
 	routesDT.init();
 });
