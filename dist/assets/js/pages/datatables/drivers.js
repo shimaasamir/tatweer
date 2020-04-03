@@ -178,6 +178,9 @@ var driversDT = function () {
 					password: {
 						required: true
 					},
+					mobile: {
+						required: true
+					},
 
 
 
@@ -294,6 +297,9 @@ var driversDT = function () {
 						required: true
 					},
 					dateOfBirth: {
+						required: true
+					},
+					mobile: {
 						required: true
 					},
 				}

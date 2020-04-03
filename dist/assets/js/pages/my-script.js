@@ -1,5 +1,5 @@
 
-var arrows, roles;
+var arrows, roles, drivers, vehicles;
 var token = $.cookie("access_token");
 
 $('#logOut').click(function (e) {
@@ -89,6 +89,116 @@ var loadAllRoles = function () {
 
 };
 
+var loadAllDrivers = function () {
+    drivers = [];
+    $.ajax({
+        url: "http://tatweer-api.ngrok.io/api/Driver/GetAllDriversPaging",
+        type: "POSt",
+        data: {
+            pagenumber: 1,
+            pageSize: 9999999
+        },
+        headers: {
+            "Authorization": "Berear " + token
+        },
+        success: function (response) {
+
+            response.data.data.map(driver => {
+                drivers.push({ ...driver, text: driver.firstName + " " + driver.lastName })
+            })
+            console.log(drivers)
+            $("#drivers").select2({
+                placeholder: "Select a value",
+                data: drivers
+            });
+
+            $('#addModal').modal('show');
+
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            swal.fire("Error deleting!", "Please try again", "error");
+        }
+    })
+
+};
+var loadAllVehicles = function () {
+    vehicles = [];
+    $.ajax({
+        url: "http://tatweer-api.ngrok.io/api/Vehicle/GetAllVehicles",
+        type: "GET",
+
+        headers: {
+            "Authorization": "Berear " + token
+        },
+        success: function (response) {
+
+            response.data.map(vehicle => {
+                vehicles.push({ ...vehicle, text: vehicle.brand + "-" + vehicle.model + "-" + vehicle.color })
+            })
+            console.log(vehicles)
+            $("#vehicles").select2({
+                placeholder: "Select a value",
+                data: vehicles
+            });
+
+            $('#addModal').modal('show');
+
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            swal.fire("Error deleting!", "Please try again", "error");
+        }
+    })
+
+};
+var loadAllClients = function (modal) {
+    clients = [];
+    $.ajax({
+        url: "http://tatweer-api.ngrok.io/api/Client/GetAllClients",
+        type: "GET",
+
+        headers: {
+            "Authorization": "Berear " + token
+        },
+        success: function (response) {
+
+            response.data.map(client => {
+                clients.push({ ...client, text: client.name })
+            })
+            console.log(clients)
+            // $("#clients").select2({
+            // 	placeholder: "Select a value",
+            // 	data: clients
+            // })
+            // $("#clientsModal").select2({
+            // 	placeholder: "Select a value",
+            // 	data: clients
+            // });
+            if (modal) {
+                $("#clientsModal").select2({
+                    placeholder: "Select a value",
+                    data: clients
+                });
+            } else {
+                $("#clients").select2({
+                    placeholder: "Select a value",
+                    data: clients
+                });
+            }
+
+
+
+
+
+
+            // $('#addModal').modal('show');
+
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            swal.fire("Error !", "Please try again", "error");
+        }
+    })
+
+};
 $('.datePicker').datepicker({
     rtl: KTUtil.isRTL(),
     todayHighlight: true,
@@ -102,90 +212,65 @@ $('.checkboxInput').change(function () {
     $('.checkboxInput').val($(this).is(':checked'));
     console.log($('.checkboxInput').val());
 });
-$(document).on('change', '#licensePicURLInput', function (event) {
-    console.log("formData")
 
-    // $('#licensePicURLInput').change(function (event) {
-    var files = $('#licensePicURLInput')[0].files[0];
+var uploadFile = function (inputSelector, formSelector, uploadURL, fileNameField) {
+    $('#imageUploding').hide();
 
-    if (files.length > 0) {
+    $(document).on('change', inputSelector, function (event) {
+        $('#imageUploding').show();
 
-        // if (files[0].size > 81920) {
-        //     /* Check the image size before upload not to be more than 80K */
-        //     return false;
-        // }
+        var files = event.target.files;
+        if (files.length > 0) {
+            var _form = $(this).closest(formSelector);
+            // if (files[0].size > 81920) {
+            //     /* Check the image size before upload not to be more than 80K */
+            //     showErrorMsg($('#addNewForm'), 'danger', 'File is must be smaller than 100K');
+            //     $('#imageUploding').hide();
 
-        var formData = new FormData($("#addNewForm")[0]);
-        // var files = $('#licensePicURLInput')[0].files[0];
-        formData.append('licensePicURL', files);
-        console.log("formData")
-        console.log(formData)
-        $.ajax({
-            url: "http://tatweer-api.ngrok.io/api/driver/upload/image",
-            type: 'POST',
-            headers: {
-                "Content-Type": "multipart / form-data",
-                "Authorization": "Berear " + token
-            },
-            data: formData,
-            async: false,
-            success: function (res) {
-                var list, vType;
-                var types = ['png', 'jpg', 'jpeg'];
-                for (var i = 0; i < res.data.length; i++) {
-                    if (res.data[i].status == 200) {
-                        $("[VIEW_IMAGE_SELECTOR]").attr('src', res.data[i].url);
+
+            // }
+            var formData = new FormData($(_form)[0]);
+            $.ajax({
+                url: uploadURL,
+                type: 'POST',
+                headers: { Authorization: 'Bearer ' + token },
+                data: formData,
+                async: false,
+                success: function (res) {
+                    var list, vType;
+                    var types = ['png', 'jpg', 'jpeg'];
+                    for (var i = 0; i < res.data.length; i++) {
+                        if (res.data[i].status == 200) {
+                            // var img = new Image();
+                            fileNameField.val(res.data[i].url);
+                            // $(".kt-avatar__holder").append(img);
+
+                        }
+                        else {
+                            showErrorMsg($('#addNewForm'), 'danger', res.data[i].Message);
+
+                        }
                     }
-                    else {
-                        alert(res.data[i].Message);
-                    }
-                }
-                /* HIDE LOADER */
-                $('[LOADER_SELECTOR]').hide();
-            },
-            xhr: function () {
-                var xhr = $.ajaxSettings.xhr();
-                xhr.upload.onprogress = function (evt) { };
-                xhr.upload.onload = function () { console.log('DONE!') };
-                return xhr;
-            },
-            cache: false,
-            contentType: false,
-            processData: false,
-            async: true
-        });
-        return false;
+                    /* HIDE LOADER */
+                    $('#imageUploding').hide();
 
+                },
+                xhr: function () {
+                    var xhr = $.ajaxSettings.xhr();
+                    xhr.upload.onprogress = function (evt) { };
+                    xhr.upload.onload = function () { console.log('DONE!') };
+                    return xhr;
+                },
+                cache: false,
+                contentType: false,
+                processData: false,
+                async: true
+            });
+            return false;
+        }
+    });
+}
 
-    }
-});
-// $('#licensePicURL').change(function () {
-//     var licURL
-//     $.ajax({
-//         url: "http://tatweer-api.ngrok.io/api/driver/upload/image",
-//         type: "POST",
-
-//         headers: {
-//             "Content-Type": multipart / form - data
-//         },
-//         success: function (response) {
-
-//             response.data.map(role => {
-//                 roles.push({ ...role, text: role.name })
-//             })
-//             console.log(roles)
-//             $("#roles").select2({
-//                 placeholder: "Select a value",
-//                 data: roles
-//             });
-
-//             $('#addModal').modal('show');
-
-//         },
-//         error: function (xhr, ajaxOptions, thrownError) {
-//             swal.fire("Error deleting!", "Please try again", "error");
-//         }
-//     })
-// });
-
-
+uploadFile('#license_upload', 'form#licenseUpload', 'http://tatweer-api.ngrok.io/api/upload/driver/image', $('#licensePicURLField'))
+uploadFile('#picURL_upload', 'form#picURLUpload', 'http://tatweer-api.ngrok.io/api/upload/driver/image', $('#picUrlField'))
+uploadFile('#vehicleLic_upload', 'form#vehicleLicUpload', 'http://tatweer-api.ngrok.io/api/vehicle/upload/license')

@@ -52,55 +52,7 @@ var routesDT = function () {
 		});
 	}
 
-	var loadAllClients = function (modal) {
-		clients = [];
-		$.ajax({
-			url: "http://tatweer-api.ngrok.io/api/Client/GetAllClients",
-			type: "GET",
 
-			headers: {
-				"Authorization": "Berear " + token
-			},
-			success: function (response) {
-
-				response.data.map(client => {
-					clients.push({ ...client, text: client.name })
-				})
-				console.log(clients)
-				// $("#clients").select2({
-				// 	placeholder: "Select a value",
-				// 	data: clients
-				// })
-				// $("#clientsModal").select2({
-				// 	placeholder: "Select a value",
-				// 	data: clients
-				// });
-				if (modal) {
-					$("#clientsModal").select2({
-						placeholder: "Select a value",
-						data: clients
-					});
-				} else {
-					$("#clients").select2({
-						placeholder: "Select a value",
-						data: clients
-					});
-				}
-
-
-
-
-
-
-				// $('#addModal').modal('show');
-
-			},
-			error: function (xhr, ajaxOptions, thrownError) {
-				swal.fire("Error !", "Please try again", "error");
-			}
-		})
-
-	};
 	loadAllClients(false)
 
 
@@ -398,7 +350,7 @@ var routesDT = function () {
 					btn.removeClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', false);
 					console.log(response);
 					$('#addModal').modal('hide');
-					// datatable.ajax.reload()
+					datatable.ajax.reload()
 				},
 				error: function (response) {
 					console.log(response);

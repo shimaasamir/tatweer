@@ -99,15 +99,21 @@
 								</a>
 							</li>
 							<li class="kt-menu__item " aria-haspopup="true">
+								<a href="clients.html" class="kt-menu__link ">
+									<i class="kt-menu__link-icon fa fa-users"></i>
+									<span class="kt-menu__link-text">Clients</span>
+								</a>
+							</li>
+							<li class="kt-menu__item " aria-haspopup="true">
 								<a href="routes.html" class="kt-menu__link ">
 									<i class="kt-menu__link-icon fa fa-route"></i>
 									<span class="kt-menu__link-text">Routes</span>
 								</a>
 							</li>
 							<li class="kt-menu__item " aria-haspopup="true">
-								<a href="clients.html" class="kt-menu__link ">
-									<i class="kt-menu__link-icon fa fa-users"></i>
-									<span class="kt-menu__link-text">Clients</span>
+								<a href="trips.html" class="kt-menu__link ">
+									<i class="kt-menu__link-icon fa fa-road"></i>
+									<span class="kt-menu__link-text">Trips</span>
 								</a>
 							</li>
 
@@ -346,6 +352,9 @@
 	<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 		aria-hidden="true">
 		<div class="modal-dialog modal-lg" role="document">
+			<div id="imageUploding">
+				<img src="assets/plugins/global/images/owl.carousel/ajax-loader.gif" />
+			</div>
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLabel">New Driver</h5>
@@ -356,9 +365,10 @@
 
 
 				<div class="modal-body">
-					<form id="addNewForm" name="addNewForm" enctype="multipart/form-data">
-						<div class="row">
-							<div class="col-md-6">
+					<div class="row">
+						<div class="col-md-6">
+							<form id="addNewForm" name="addNewForm">
+
 								<div class="form-group">
 									<label class="form-control-label">First Name:</label>
 									<input required type="text" class="form-control" name="firstName">
@@ -377,13 +387,28 @@
 									<input type="text" autocomplete="false" name="email" class="form-control" />
 								</div>
 								<div class="form-group ">
+									<label class="form-control-label">Mobile</label>
+									<input type="text" autocomplete="false" name="mobile" class="form-control" />
+								</div>
+								<div class="form-group ">
 									<label class="form-control-label">Password</label>
 									<input type="password" autocomplete="false" name="password" class="form-control" />
 								</div>
+								<div class="kt-checkbox-list">
+									<label class="kt-checkbox">
+										<input id="employee" class="checkboxInput" type="checkbox" name="isEmployee">
+										Employee
+										<span></span>
+									</label>
+								</div>
+								<input type="hidden" name="id" />
+								<input type="hidden" id="licensePicURLField" name="licensePicURL" />
+								<input type="hidden" id="picUrlField" name="picUrl" />
+							</form>
 
-
-							</div>
-							<div class="col-md-6">
+						</div>
+						<div class="col-md-6">
+							<form id="licenseUpload" method="post" enctype="multipart/form-data">
 								<div class="form-group ">
 									<label class="form-control-label">License Pic</label>
 									<div>
@@ -393,8 +418,10 @@
 												data-original-title="Change avatar">
 												<i class="fa fa-pen"></i>
 												<input type="file" name="licensePicURL[]" multiple="multiple"
-													id="licensePicURLInput" accept=".png, .jpg, .jpeg">
+													id="license_upload" accept=".png, .jpg, .jpeg" required
+													data-errorMessage="Required">
 											</label>
+
 											<span class="kt-avatar__cancel" data-toggle="kt-tooltip" title=""
 												data-original-title="Cancel avatar">
 												<i class="fa fa-times"></i>
@@ -403,6 +430,8 @@
 										<span class="form-text text-muted">Allowed file types: png, jpg, jpeg.</span>
 									</div>
 								</div>
+							</form>
+							<form id="picURLUpload" method="post" enctype="multipart/form-data">
 								<div class="form-group ">
 									<label class="form-control-label">Profile Pic</label>
 									<div>
@@ -411,8 +440,11 @@
 											<label class="kt-avatar__upload" data-toggle="kt-tooltip" title=""
 												data-original-title="Change avatar">
 												<i class="fa fa-pen"></i>
-												<input type="file" name="picURL" accept=".png, .jpg, .jpeg">
+												<input id="picURL_upload" type="file" accept=".png, .jpg, .jpeg"
+													class="btn btn-secondary " name="picURL[]" multiple="multiple"
+													required data-errorMessage="Required" />
 											</label>
+
 											<span class="kt-avatar__cancel" data-toggle="kt-tooltip" title=""
 												data-original-title="Cancel avatar">
 												<i class="fa fa-times"></i>
@@ -421,25 +453,18 @@
 										<span class="form-text text-muted">Allowed file types: png, jpg, jpeg.</span>
 									</div>
 								</div>
+							</form>
 
 
 
 
 
-								<div class="kt-checkbox-list">
-									<label class="kt-checkbox">
-										<input id="employee" class="checkboxInput" type="checkbox" name="isEmployee">
-										Employee
-										<span></span>
-									</label>
-								</div>
-								<input type="hidden" name="id" />
-							</div>
 
 						</div>
 
+					</div>
 
-					</form>
+
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
