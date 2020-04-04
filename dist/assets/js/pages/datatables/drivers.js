@@ -119,7 +119,7 @@ var driversDT = function () {
 
 					$('#addModal #addNewForm input[name="firstName"]').val(response.data.firstName);
 					$('#addModal #addNewForm input[name="lastName"]').val(response.data.lastName);
-					$('#addModal #addNewForm input[name="dateOfBirth"]').val(response.data.dateOfBirth);
+					$('#addModal #addNewForm input[name="dateOfBirth"]').val(formatDate(response.data.dateOfBirth));
 					$('#addModal #addNewForm input[name="email"]').val(response.data.email);
 					$('#addModal #addNewForm input[name="password"]').val(response.data.password);
 					$('#addModal #addNewForm input[name="licensePicURL"]').val(response.data.licensePicURL);
@@ -259,7 +259,7 @@ var driversDT = function () {
 					// console.log(viewForm)
 					$('#addModal #addNewForm input[name="firstName"]').val(response.data.firstName);
 					$('#addModal #addNewForm input[name="lastName"]').val(response.data.lastName);
-					$('#addModal #addNewForm input[name="dateOfBirth"]').val(response.data.dateOfBirth);
+					$('#addModal #addNewForm input[name="dateOfBirth"]').val(formatDate(response.data.dateOfBirth));
 					$('#addModal #addNewForm input[name="email"]').val(response.data.email);
 					$('#addModal #addNewForm input[name="password"]').val(response.data.password);
 					$('#addModal #addNewForm input[name="licensePicURL"]').val(response.data.licensePicURL);

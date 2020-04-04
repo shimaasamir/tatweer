@@ -93,15 +93,11 @@ var tripsDT = function () {
 
 					$('#addModal #addNewForm input[name="routeName"]').val(res.data.routeName);
 					$('#addModal #addNewForm input[name="passengersCount"]').val(res.data.passenger.length);
-					$('#addModal #addNewForm input[name="tripDate"]').val(res.data.tripDate);
-					$('#addModal #addNewForm input[name="startTime"]').val(res.data.startTime);
+					$('#addModal #addNewForm input[name="tripDate"]').val(formatDate(res.data.tripDate));
+					$('#addModal #addNewForm input[name="startTime"]').val(getTime(res.data.startTime));
 					$('#addModal #addNewForm input[name="id"]').val(res.data.id);
 					var selectedPassengers = res.data.passenger
-					// var selectedPassengers = [
-					// 	{
-					// 		id: 122
-					// 	}
-					// ]
+
 
 
 
@@ -131,7 +127,7 @@ var tripsDT = function () {
 				return;
 			}
 
-			console.log("ids", c)
+			// console.log("ids", c)
 			var submitdata = {
 				vehicleID: $("#vehicles").val(),
 				driverId: $("#drivers").val()
