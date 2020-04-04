@@ -203,8 +203,7 @@ var driversDT = function () {
 				method: "POST",
 				data: {
 					...formData,
-					licensePicURL: "",
-					picURL: "",
+
 					roleId: 3,
 					isEmployee: $("#employee").val(),
 					isActive: true,
@@ -323,8 +322,7 @@ var driversDT = function () {
 				data: {
 					...formData,
 					isEmployee: $('#addModal #addNewForm input[name="isEmployee"]:checked').length > 0,
-					licensePicURL: "",
-					picURL: "",
+
 					isActive: true,
 					roleId: 3,
 					createDate: new Date(),
