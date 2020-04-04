@@ -274,4 +274,4 @@ var uploadFile = function (inputSelector, formSelector, uploadURL, fileNameField
 
 uploadFile('#license_upload', 'form#licenseUpload', 'http://tatweer-api.ngrok.io/api/upload/driver/image', $('#licensePicURLField'))
 uploadFile('#picURL_upload', 'form#picURLUpload', 'http://tatweer-api.ngrok.io/api/upload/driver/image', $('#picUrlField'))
-uploadFile('#vehicleLic_upload', 'form#vehicleLicUpload', 'http://tatweer-api.ngrok.io/api/vehicle/upload/license', $('#vehicleLicense'))
+uploadFile('#vehicleLic_upload', 'form#vehicleLicUpload', 'http://tatweer-api.ngrok.io/api/upload/vehicle/license', $('#vehicleLicense'))

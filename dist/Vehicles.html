@@ -420,11 +420,12 @@
 								</div>
 								<input type="hidden" name="id" />
 								<input type="hidden" id="vehicleLicense" name="vehicleLicense" />
+								<input type="hidden" id="vehiclePic" name="picURL" />
 							</div>
 						</div>
 					</form>
 					<div class="row">
-						<div class="col-md-12">
+						<div class="col-md-6">
 							<form id="vehicleLicUpload" method="post" enctype="multipart/form-data">
 								<div class="form-group ">
 									<label class="form-control-label">Vehicle License</label>
@@ -450,6 +451,33 @@
 								</div>
 							</form>
 						</div>
+						<!-- <div class="col-md-6">
+							<form id="picURLUpload" method="post" enctype="multipart/form-data">
+								<div class="form-group ">
+									<label class="form-control-label">Profile Pic</label>
+									<div>
+										<div class="kt-avatar kt-avatar--outline" id="picURL">
+											<div class="kt-avatar__holder"></div>
+											<label class="kt-avatar__upload" data-toggle="kt-tooltip" title=""
+												data-original-title="Change avatar">
+												<i class="fa fa-pen" style="margin-left: 25px;"></i>
+												<input id="picURL_upload" type="file" accept=".png, .jpg, .jpeg"
+													class="btn btn-secondary " name="picURL[]" multiple="multiple"
+													required data-errorMessage="Required" />
+											</label>
+
+											<span class="kt-avatar__cancel" data-toggle="kt-tooltip" title=""
+												data-original-title="Cancel avatar">
+												<i class="fa fa-times"></i>
+											</span>
+										</div>
+										<span class="form-text text-muted">Allowed file types: png, jpg, jpeg.</span>
+									</div>
+								</div>
+							</form>
+
+						</div> -->
+
 					</div>
 
 				</div>
