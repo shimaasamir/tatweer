@@ -361,6 +361,9 @@
 	<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 		aria-hidden="true">
 		<div class="modal-dialog modal-lg" role="document">
+			<div id="imageUploding">
+				<img src="assets/plugins/global/images/owl.carousel/ajax-loader.gif" />
+			</div>
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLabel">New Vehicle</h5>
@@ -371,8 +374,8 @@
 
 
 				<div class="modal-body">
-					<div class="row">
-						<form id="addNewForm" name="addNewForm">
+					<form id="addNewForm" name="addNewForm">
+						<div class="row">
 							<div class="col-md-6">
 								<div class="form-group">
 									<label class="form-control-label">Brand:</label>
@@ -416,9 +419,11 @@
 									</label>
 								</div>
 								<input type="hidden" name="id" />
-								<input type="hidden" id="vehicleLicUrl" name="vehicleLicUrl" />
+								<input type="hidden" id="vehicleLicense" name="vehicleLicense" />
 							</div>
-						</form>
+						</div>
+					</form>
+					<div class="row">
 						<div class="col-md-12">
 							<form id="vehicleLicUpload" method="post" enctype="multipart/form-data">
 								<div class="form-group ">
@@ -428,7 +433,7 @@
 											<div class="kt-avatar__holder"></div>
 											<label class="kt-avatar__upload" data-toggle="kt-tooltip" title=""
 												data-original-title="Change avatar">
-												<i class="fa fa-pen"></i>
+												<i class="fa fa-pen" style="margin-left: 25px;"></i>
 												<input id="vehicleLic_upload" type="file" accept=".png, .jpg, .jpeg"
 													class="btn btn-secondary " name="vehicleLic[]" multiple="multiple"
 													required data-errorMessage="Required" />

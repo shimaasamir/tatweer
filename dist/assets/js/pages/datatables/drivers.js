@@ -122,10 +122,12 @@ var driversDT = function () {
 					$('#addModal #addNewForm input[name="dateOfBirth"]').val(response.data.dateOfBirth);
 					$('#addModal #addNewForm input[name="email"]').val(response.data.email);
 					$('#addModal #addNewForm input[name="password"]').val(response.data.password);
+					$('#addModal #addNewForm input[name="licensePicURL"]').val(response.data.licensePicURL);
+					$('#addModal #addNewForm input[name="picUrl"]').val(response.data.picUrl);
 
 
-					$('#licensePicURL').css('background-image', 'url(' + response.data.licensePicURL + ')');
-					$('#picURL').css('background-image', 'url(' + response.data.picURL + ')');
+					$('#licensePicURL .kt-avatar__holder').css('background-image', 'url(' + response.data.licensePicURL + ')');
+					$('#picURL .kt-avatar__holder').css('background-image', 'url(' + response.data.picUrl + ')');
 					$('#addModal #addNewForm #employee').prop('checked', response.data.isEmployee)
 					$('#addModal #addNewForm input[name="id"]').val(response.data.id);
 					// swal.fire("Doneosdflsdfsodfjo!", "It was succesfully deleted!", "success");
@@ -230,7 +232,7 @@ var driversDT = function () {
 				},
 				error: function (response) {
 					console.log(response);
-					showErrorMsg(form, 'danger', response.message);
+					showErrorMsg(form, 'danger', "Error!, Please try Again");
 				}
 			});
 		});
@@ -261,11 +263,13 @@ var driversDT = function () {
 					$('#addModal #addNewForm input[name="dateOfBirth"]').val(response.data.dateOfBirth);
 					$('#addModal #addNewForm input[name="email"]').val(response.data.email);
 					$('#addModal #addNewForm input[name="password"]').val(response.data.password);
-					$('#roles').val(response.data.roleID);
-					$('#roles').trigger('change');
+					$('#addModal #addNewForm input[name="licensePicURL"]').val(response.data.licensePicURL);
+					$('#addModal #addNewForm input[name="picUrl"]').val(response.data.picUrl);
 
-					$('#licensePicURL').css('background-image', 'url(' + response.data.licensePicURL + ')');
-					$('#picURL').css('background-image', 'url(' + response.data.picURL + ')');
+					// $('.kt-avatar__holder').css('background-image', 'url(' + res.data.picUrl + ')');
+
+					$('#licensePicURL .kt-avatar__holder').css('background-image', 'url(' + response.data.licensePicURL + ')');
+					$('#picURL .kt-avatar__holder').css('background-image', 'url(' + response.data.picUrl + ')');
 					$('#addModal #addNewForm #employee').prop('checked', response.data.isEmployee)
 					$('#addModal #addNewForm input[name="id"]').val(response.data.id);
 					// swal.fire("Doneosdflsdfsodfjo!", "It was succesfully deleted!", "success");
@@ -348,7 +352,7 @@ var driversDT = function () {
 				},
 				error: function (response) {
 					console.log(response);
-					showErrorMsg(form, 'danger', response.message);
+					showErrorMsg(form, 'danger', "Error!, Please try Again");
 				}
 			});
 		});

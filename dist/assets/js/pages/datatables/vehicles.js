@@ -134,6 +134,8 @@ var vehiclesDT = function () {
 					$('#addModal #addNewForm input[name="chassisNumber"]').val(response.data.chassisNumber);
 					$('#addModal #addNewForm input[name="isAsset"]').prop("checked", response.data.isAsset ? true : false)
 					$('#addModal #addNewForm input[name="capacity"]').val(response.data.capacity);
+					$('#addModal #addNewForm input[name="vehicleLicense"]').val(response.data.vehicleLicense);
+					$('#vehicleLicUpload .kt-avatar__holder').css('background-image', 'url(' + response.data.vehicleLicense + ')');
 					// swal.fire("Doneosdflsdfsodfjo!", "It was succesfully deleted!", "success");
 					// datatable.ajax.reload();
 
@@ -184,8 +186,8 @@ var vehiclesDT = function () {
 					$('#addModal #addNewForm input[name="engineNumber"]').val(response.data.engineNumber);
 					$('#addModal #addNewForm input[name="chassisNumber"]').val(response.data.chassisNumber);
 					$('#addModal #addNewForm input[name="isAsset"]').prop("checked", response.data.isAsset ? true : false)
-					// $('#asset').val($(this).is(':checked'));
-
+					$('#addModal #addNewForm input[name="vehicleLicense"]').val(response.data.vehicleLicense);
+					$('#vehicleLicUpload .kt-avatar__holder').css('background-image', 'url(' + response.data.vehicleLicense + ')');
 					$('#addModal #addNewForm input[name="capacity"]').val(response.data.capacity);
 					$('#addModal #addNewForm input[name="id"]').val(response.data.id);
 					// swal.fire("Doneosdflsdfsodfjo!", "It was succesfully deleted!", "success");

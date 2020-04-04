@@ -56,6 +56,7 @@ if (KTUtil.isRTL()) {
 
 $('.modal').on('hidden.bs.modal', function () {
     $('#addNewForm').validate().destroy();
+    $('.kt-avatar__holder').css('background-image', '');
     console.log("object")
 })
 // 
@@ -273,4 +274,4 @@ var uploadFile = function (inputSelector, formSelector, uploadURL, fileNameField
 
 uploadFile('#license_upload', 'form#licenseUpload', 'http://tatweer-api.ngrok.io/api/upload/driver/image', $('#licensePicURLField'))
 uploadFile('#picURL_upload', 'form#picURLUpload', 'http://tatweer-api.ngrok.io/api/upload/driver/image', $('#picUrlField'))
-uploadFile('#vehicleLic_upload', 'form#vehicleLicUpload', 'http://tatweer-api.ngrok.io/api/vehicle/upload/license')
+uploadFile('#vehicleLic_upload', 'form#vehicleLicUpload', 'http://tatweer-api.ngrok.io/api/vehicle/upload/license', $('#vehicleLicense'))
