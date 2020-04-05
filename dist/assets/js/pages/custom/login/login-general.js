@@ -8,7 +8,36 @@ var KTLoginGeneral = function () {
 
     //end--convert form to json
 
+    $.fn.extractObject = function () {
+        var accum = {};
+        function add(accum, namev, value) {
+            if (namev.length == 1)
+                accum[namev[0]] = value;
+            else {
+                if (accum[namev[0]] == null)
+                    accum[namev[0]] = {};
+                add(accum[namev[0]], namev.slice(1), value);
+            }
+        };
+        this.find('input, textarea, select').each(function () {
+            add(accum, $(this).attr('name').split('.'), $(this).val());
+        });
+        return accum;
+    };
+    var showErrorMsg = function (form, type, msg) {
+        var alert = $('<div class="alert alert-' + type + ' alert-dismissible" role="alert">\
+            <div class="alert-text">'+ msg + '</div>\
+            <div class="alert-close">\
+                <i class="flaticon2-cross kt-icon-sm" data-dismiss="alert"></i>\
+            </div>\
+        </div>');
 
+        form.find('.alert').remove();
+        alert.prependTo(form);
+        //alert.animateClass('fadeIn animated');
+        KTUtil.animateClass(alert[0], 'fadeIn animated');
+        alert.find('span').html(msg);
+    }
 
     var handleSignInFormSubmit = function () {
         $('#kt_login_signin_submit').click(function (e) {
@@ -44,7 +73,7 @@ var KTLoginGeneral = function () {
                 },
                 data: {
                     // ...formData,
-                    "grant_type": "2"
+                    "grant_type": "1"
                 },
                 success: function (response, status, xhr, $form) {
                     // similate 2s delay
@@ -70,7 +99,7 @@ var KTLoginGeneral = function () {
                                 "grant_type": "1"
                             },
                             success: function (response) {
-                                $.cookie("user", JSON.stringify(response));
+                                $.cookie("user", JSON.stringify(response.data));
 
                                 window.location.href = "vehicles.html"
                                 console.log(response)

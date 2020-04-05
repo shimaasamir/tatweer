@@ -75,6 +75,7 @@ var tripsDT = function () {
 			// console.log(e.currentTarget.dataset.id);
 			// $(".modal-title").text("View Trip");
 			$('#addModal #addNewForm input').prop("disabled", true);
+
 			// $('#addModal #addNew,#addModal #update').hide();
 			loadAllVehicles()
 			loadAllDrivers()
@@ -96,8 +97,10 @@ var tripsDT = function () {
 					$('#addModal #addNewForm input[name="tripDate"]').val(formatDate(res.data.tripDate));
 					$('#addModal #addNewForm input[name="startTime"]').val(getTime(res.data.startTime));
 					$('#addModal #addNewForm input[name="id"]').val(res.data.id);
-					var selectedPassengers = res.data.passenger
-
+					$('#vehicles').val(res.data.vehicleID);
+					$('#vehicles').trigger('change');
+					$('#drivers').val(res.data.driverID);
+					$('#drivers').trigger('change');
 
 
 
@@ -109,12 +112,18 @@ var tripsDT = function () {
 
 		});
 		$('#update').click(function (e) {
-			e.preventDefault();
+			let id = e.currentTarget.dataset.id;
+
+			// e.preventDefault();
 			var btn = $(this);
 			var form = $('#addNewForm');
+			// let viewForm = $('#addModal #addNewForm')
+			form.each(function () {
+				this.reset();
+			});
 			form.validate({
 				rules: {
-					driverId: {
+					driverID: {
 						required: true
 					},
 					vehicleID: {
@@ -126,15 +135,19 @@ var tripsDT = function () {
 			if (!form.valid()) {
 				return;
 			}
-
+			if (!$("#vehicles").val() || !$("#drivers").val()) {
+				showErrorMsg(form, 'danger', "please assign deriver and vehicle");
+				return;
+			}
 			// console.log("ids", c)
 			var submitdata = {
+				tripId: id,
 				vehicleID: $("#vehicles").val(),
 				driverId: $("#drivers").val()
 			}
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			form.ajaxSubmit({
-				url: "http://tatweer-api.ngrok.io/api/Trip/UpdateTrip",
+				url: "http://tatweer-api.ngrok.io/api/Trip/confirm",
 				method: "POST",
 				data: submitdata,
 				headers: {

@@ -1,10 +1,16 @@
 
 var arrows, roles, drivers, vehicles;
 var token = $.cookie("access_token");
-
+var user = JSON.parse($.cookie("user"));
+console.log(user)
+if (user) {
+    $('.kt-badge--rounded').html(user.email.charAt(0))
+    $('.kt-user-card__name').html(user.email)
+}
 $('#logOut').click(function (e) {
     // e.perventDefault();
     $.cookie('access_token', null);
+    $.cookie('user', null);
     console.log($.cookie("access_token"))
     window.location.href = "index.html"
 
@@ -56,6 +62,7 @@ if (KTUtil.isRTL()) {
 
 $('.modal').on('hidden.bs.modal', function () {
     $('#addNewForm').validate().destroy();
+    $('.modal').find('.alert').remove()
     $('.kt-avatar__holder').css('background-image', '');
     console.log("object")
 })
@@ -79,12 +86,12 @@ var loadAllRoles = function () {
                 placeholder: "Select a value",
                 data: roles
             });
-
             $('#addModal').modal('show');
-
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            swal.fire("Error deleting!", "Please try again", "error");
+            if (xhr.ErrorCode == 401) {
+                window.location.href = "index.html"
+            }
         }
     })
 
@@ -117,7 +124,9 @@ var loadAllDrivers = function () {
 
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            swal.fire("Error deleting!", "Please try again", "error");
+            if (xhr.ErrorCode == 401) {
+                window.location.href = "index.html"
+            }
         }
     })
 
@@ -146,7 +155,9 @@ var loadAllVehicles = function () {
 
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            swal.fire("Error deleting!", "Please try again", "error");
+            if (xhr.ErrorCode == 401) {
+                window.location.href = "index.html"
+            }
         }
     })
 
@@ -195,7 +206,9 @@ var loadAllClients = function (modal) {
 
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            swal.fire("Error !", "Please try again", "error");
+            if (xhr.ErrorCode == 401) {
+                window.location.href = "index.html"
+            }
         }
     })
 
