@@ -17,10 +17,18 @@ var driversDT = function () {
 	var datatable;
 	var drivers = function () {
 		if (datatable) datatable.destroy();
-		datatable = _dt.bindDataTable('#dataTable', [0, 1, 2, 3, 4, 5],
+		datatable = _dt.bindDataTable('#dataTable', [0, 1, 2, 3, 4, 5, 6],
 			function (data, a, b, c) {
 				// console.log(a)
 				if (c.col == 5) {
+
+					if (b.isEmployee) {
+						return '<span class="kt-badge kt-badge--inline kt-badge--success">Employee</span>'
+					} else {
+						return '<span class="kt-badge kt-badge--inline kt-badge--warning">Not Employee</span>'
+					}
+				}
+				if (c.col == 6) {
 					return '\
 						<a href="javascript:;" data-id="' + b.id + '" class="btn btn-sm btn-clean btn-icon btn-icon-sm view"  title="View details">\
                                 <i class="flaticon-eye">\</i>\
@@ -52,6 +60,9 @@ var driversDT = function () {
 		},
 		{
 			"data": "email"
+		},
+		{
+			"data": "asset"
 		},
 		{
 			data: 'Actions',

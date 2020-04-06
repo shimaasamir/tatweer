@@ -89,9 +89,9 @@ function DataTableEntry() {
             pageLength: (pageLen) ? pageLen : 10,
             processing: true,
             serverSide: true,
-            searching: false,
+            searching: true,
             columnDefs: [{
-                searchable: false,
+                searchable: true,
                 sortable: false,
                 targets: targets,
                 render: renderFn

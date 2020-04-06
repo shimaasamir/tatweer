@@ -21,25 +21,35 @@ var vehiclesDT = function () {
 		// console.log(token)
 		if (datatable) datatable.destroy();
 
-		datatable = _dt.bindDataTable('#dataTable', [0, 1, 2, 3, 4, 5, 6, 7],
+		datatable = _dt.bindDataTable('#dataTable', [0, 1, 2, 3, 4, 5, 6, 7, 8],
 			function (data, a, b, c) {
 				// console.log(a)
 				if (c.col == 7) {
+
+					if (b.isAsset) {
+						return '<span class="kt-badge kt-badge--inline kt-badge--success">Asset</span>'
+					} else {
+						return '<span class="kt-badge kt-badge--inline kt-badge--warning">Not Asset</span>'
+
+					}
+				}
+				// b.isAsset : '<span class="kt-badge kt-badge--inline kt-badge--success">Success</span>' ? '<span class="kt-badge kt-badge--inline kt-badge--success">Success</span>'
+
+				if (c.col == 8) {
 					return '\
-						<a href="javascript:;" data-id="' + b.id + '" class="btn btn-sm btn-clean btn-icon btn-icon-sm view"  title="View details">\
-                                <i class="flaticon-eye">\</i>\
+							<a href="javascript:;" data-id="' + b.id + '" class="btn btn-sm btn-clean btn-icon btn-icon-sm view"  title="View details">\
+									<i class="flaticon-eye">\</i>\
+								</a>\
+							<a href="javascript:;" data-id="' + b.id + '" class="btn btn-sm btn-clean btn-icon btn-icon-sm edit" title="Edit details">\
+								<i class="flaticon2-paper"></i>\
 							</a>\
-						<a href="javascript:;" data-id="' + b.id + '" class="btn btn-sm btn-clean btn-icon btn-icon-sm edit" title="Edit details">\
-							<i class="flaticon2-paper"></i>\
-						</a>\
-						<a href="javascript:;" data-id="' + b.id + '" class="btn btn-sm btn-clean btn-icon btn-icon-sm delete" title="Delete">\
-							<i class="flaticon2-trash"></i>\
-						</a>\
-					';
+							<a href="javascript:;" data-id="' + b.id + '" class="btn btn-sm btn-clean btn-icon btn-icon-sm delete" title="Delete">\
+								<i class="flaticon2-trash"></i>\
+							</a>\
+						';
 				}
 				return data;
-			},
-			'http://tatweer-api.ngrok.io/api/Vehicle/GetAllVehiclesPaging', 'POST', {
+			}, 'http://tatweer-api.ngrok.io/api/Vehicle/GetAllVehiclesPaging', 'POST', {
 			pagenumber: 1,
 			pageSize: 10
 		}, [{
@@ -62,6 +72,9 @@ var vehiclesDT = function () {
 		},
 		{
 			"data": "chassisNumber"
+		},
+		{
+			"data": "assit"
 		},
 		{
 			data: 'Actions',
