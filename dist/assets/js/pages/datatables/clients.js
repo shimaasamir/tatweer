@@ -135,6 +135,7 @@ var clientsDT = function () {
 					$('#addModal #addNewForm input[name="email"]').val(response.data.email);
 					$('#addModal #addNewForm input[name="mobile"]').val(response.data.mobile);
 					$('#addModal #addNewForm input[name="fax"]').val(response.data.fax);
+					$('#addModal #addNewForm input[name="lastUpdateTime"]').val(response.data.fax);
 					// datatable.ajax.reload();
 
 				},
@@ -229,7 +230,7 @@ var clientsDT = function () {
 		$('body').on('click', 'a.edit', function (e) {
 			let id = e.currentTarget.dataset.id;
 			let viewForm = $('#addModal #addNewForm')
-			// console.log(e.currentTarget.dataset.id);
+			// console.log(e.currentTarget.dataset.id); 
 			$(".modal-title").text("Edit Client");
 			$('#addModal #addNewForm input').prop("disabled", false);
 			$('#addModal #addNew').hide();
@@ -251,6 +252,7 @@ var clientsDT = function () {
 					$('#addModal #addNewForm input[name="email"]').val(response.data.email);
 					$('#addModal #addNewForm input[name="mobile"]').val(response.data.mobile);
 					$('#addModal #addNewForm input[name="fax"]').val(response.data.fax);
+					$('#addModal #addNewForm input[name="lastUpdateTime"]').val(response.data.lastUpdateTime);
 					$('#addModal #addNewForm input[name="id"]').val(response.data.id);
 					// swal.fire("Doneosdflsdfsodfjo!", "It was succesfully deleted!", "success");
 					datatable.ajax.reload();

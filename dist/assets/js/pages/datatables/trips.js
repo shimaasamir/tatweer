@@ -9,7 +9,31 @@ var tripsDT = function () {
 		datatable, _status = 0,
 		_sId, clients, arrows, checkPointsdatatable = $('#checkPointsTable').DataTable();
 
+	function makeTimer(tripCreation, containerID, lastUpdateTime) {
+		// tripCreation = moment.utc(tripCreation).local().format();
+		// console.log(tripCreation)
+		// var eventTime = moment(addHours(tripCreation, lastUpdateTime)).toDate().getTime() / 1000; // Timestamp - Sun, 21 Apr 2013 13:00:00 GMT
+		var startTime = moment(moment(tripCreation).add(1, 'hours').format('YYYY-MM-DD hh:mm:ss')).toDate().getTime() / 1000; // Timestamp - Sun, 21 Apr 2013 12:30:00 GMT
+		var currentTime = moment().toDate().getTime() / 1000;
+		var interval = 1000;
+		var timer;
+		var diffTime = startTime - currentTime;
+		var duration = moment.duration(diffTime * 1000, 'milliseconds');
+		if (duration._milliseconds < 0) {
+			clearInterval(timer);
+			$("#" + containerID).text("You can approve");
+			$("#" + containerID).parents("tr").find(".assign").show()
 
+		} else {
+			timer = setInterval(function () {
+				duration = moment.duration(duration - interval, 'milliseconds');
+				// console.log(duration._milliseconds)
+				$("#" + containerID).text(duration.days() + ":" + duration.hours() + ":" + duration.minutes() + ":" + duration.seconds())
+
+			}, interval);
+		}
+
+	}
 	loadAllClients(false)
 
 
@@ -29,11 +53,28 @@ var tripsDT = function () {
 			$('.tableContainer').show();
 
 			if (datatable) datatable.destroy();
-			datatable = _dt.bindDataTable('#dataTable', [0, 1, 2, 3, 4],
+			datatable = _dt.bindDataTable('#dataTable', [0, 1, 2, 3, 4, 5, 6],
 				function (data, a, b, c) {
 					// console.log(a)
-
+					// console.log(b.route.routeName)
+					makeTimer(b.tripDateTime, b.id);
+					// countDown(b.tripDateTime, b.id)
+					if (c.col == 1) {
+						return b.route.routeName;
+					}
+					if (c.col == 2) {
+						return b.route.start.name;
+					}
+					if (c.col == 3) {
+						return b.route.end.name;
+					}
 					if (c.col == 4) {
+						return formatDate(b.tripDateTime);
+					}
+					if (c.col == 5) {
+						return '<div id="' + b.id + '"></div>'
+					}
+					if (c.col == 6) {
 						return '\
 								<a href="javascript:;" data-id="' + b.id + '" class="btn btn-sm btn-clean btn-icon btn-icon-sm assign"  title="Confirm Trip">\
 										<i class="fas fa-tasks">\</i>\
@@ -46,7 +87,8 @@ var tripsDT = function () {
 				'http://tatweer-api.ngrok.io/api/Trip/GetAllTripsPaging', 'POST', {
 				pagenumber: 1,
 				pageSize: 10,
-				clientId: clientID
+				clientId: clientID,
+				statusId: 0
 			},
 				[{
 					"data": "id"
@@ -59,6 +101,9 @@ var tripsDT = function () {
 				},
 				{
 					"data": "endName"
+				},
+				{
+					"data": "tripDateTime"
 				},
 				{
 					data: 'Actions',

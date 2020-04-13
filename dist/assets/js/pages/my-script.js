@@ -218,7 +218,9 @@ $('.datePicker').datepicker({
     todayHighlight: true,
     orientation: "bottom left",
     templates: arrows,
-    format: "dd/mm/yyyy"
+    format: "dd/mm/yyyy",
+    autoclose: true,
+    endDate: "1990-01-01"
 });
 
 $('.checkboxInput').change(function () {

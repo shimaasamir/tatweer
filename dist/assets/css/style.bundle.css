@@ -57661,3 +57661,7 @@ body {
 .dataTables_filter {
   float: right
 }
+
+.btn.btn-icon.assign {
+  display: none
+}
