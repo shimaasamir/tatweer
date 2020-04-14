@@ -149,10 +149,12 @@ var routesDT = function () {
 						required: true
 					},
 					distance: {
-						required: true
+						required: true,
+						number: true
 					},
 					cost: {
-						required: true
+						required: true,
+						number: true
 					}
 				}
 			});
@@ -312,11 +314,13 @@ var routesDT = function () {
 						required: true
 					},
 					distance: {
-						required: true
+						required: true,
+						number: true
 					},
 					cost: {
-						required: true
-					},
+						required: true,
+						number: true
+					}
 
 
 

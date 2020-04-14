@@ -214,13 +214,14 @@ var loadAllClients = function (modal) {
 
 };
 $('.datePicker').datepicker({
-    rtl: KTUtil.isRTL(),
-    todayHighlight: true,
-    orientation: "bottom left",
-    templates: arrows,
+    // rtl: KTUtil.isRTL(),
+    todayHighlight: false,
+    // orientation: "bottom left",
+    // templates: arrows,
     format: "dd/mm/yyyy",
     autoclose: true,
-    endDate: "1990-01-01"
+    // endDate: "1990-01-01",
+    // startView: 3
 });
 
 $('.checkboxInput').change(function () {

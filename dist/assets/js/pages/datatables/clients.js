@@ -89,7 +89,7 @@ var clientsDT = function () {
 
 				if (result.value) {
 					$.ajax({
-						url: "http://tatweer-api.ngrok.io/api/Client/UpdateClient",
+						url: "http://tatweer-api.ngrok.io/api/User/updateStatus",
 						type: "POST",
 						data: {
 							ID: id,

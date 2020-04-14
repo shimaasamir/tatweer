@@ -87,7 +87,7 @@ var driversDT = function () {
 
 				if (result.value) {
 					$.ajax({
-						url: "http://tatweer-api.ngrok.io/api/Driver/UpdateDRiver",
+						url: "http://tatweer-api.ngrok.io/api/User/updateStatus",
 						type: "POST",
 						data: {
 							ID: id,

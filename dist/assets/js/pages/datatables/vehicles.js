@@ -10,6 +10,7 @@ var vehiclesDT = function () {
 	var _dt = new DataTableEntry(),
 		datatable, _status = 0,
 		_sId;
+	var vehicleLic = new KTAvatar('vehicleLic');
 
 
 	//start--convert form to json
