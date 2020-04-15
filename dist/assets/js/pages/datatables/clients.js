@@ -183,6 +183,9 @@ var clientsDT = function () {
 					password: {
 						required: true
 					},
+					lastUpdateTime: {
+						required: true
+					},
 
 
 
@@ -285,7 +288,9 @@ var clientsDT = function () {
 					mobile: {
 						required: true
 					},
-
+					lastUpdateTime: {
+						required: true
+					},
 
 
 

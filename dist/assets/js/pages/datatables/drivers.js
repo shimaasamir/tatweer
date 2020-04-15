@@ -207,7 +207,7 @@ var driversDT = function () {
 			var formData = $('#addNewForm').extractObject();
 
 
-			console.log(formData);
+			console.log(formData.dateOfBirth);
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			form.ajaxSubmit({
 				url: "http://tatweer-api.ngrok.io/api/Driver/AddDriver",
@@ -327,6 +327,7 @@ var driversDT = function () {
 			var formData = $('#addNewForm').extractObject();
 
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
+
 			form.ajaxSubmit({
 				url: "http://tatweer-api.ngrok.io/api/Driver/UpdateDriver",
 				method: "POST",
