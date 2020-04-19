@@ -20,6 +20,10 @@ var driversDT = function () {
 		datatable = _dt.bindDataTable('#dataTable', [0, 1, 2, 3, 4, 5, 6],
 			function (data, a, b, c) {
 				// console.log(a)
+				if (c.col == 3) {
+					return formatDate(b.dateOfBirth)
+
+				}
 				if (c.col == 5) {
 
 					if (b.isEmployee) {
@@ -132,6 +136,7 @@ var driversDT = function () {
 					$('#addModal #addNewForm input[name="lastName"]').val(response.data.lastName);
 					$('#addModal #addNewForm input[name="dateOfBirth"]').val(formatDate(response.data.dateOfBirth));
 					$('#addModal #addNewForm input[name="email"]').val(response.data.email);
+					$('#addModal #addNewForm input[name="mobile"]').val(response.data.mobile);
 					$('#addModal #addNewForm input[name="password"]').val(response.data.password);
 					$('#addModal #addNewForm input[name="licensePicURL"]').val(response.data.licensePicURL);
 					$('#addModal #addNewForm input[name="picUrl"]').val(response.data.picUrl);
@@ -260,7 +265,6 @@ var driversDT = function () {
 			$.ajax({
 				url: "http://tatweer-api.ngrok.io/api/Driver/GetDriver/" + id,
 				type: "GET",
-
 				headers: {
 					"Authorization": "Berear " + token
 				},
@@ -272,30 +276,25 @@ var driversDT = function () {
 					$('#addModal #addNewForm input[name="lastName"]').val(response.data.lastName);
 					$('#addModal #addNewForm input[name="dateOfBirth"]').val(formatDate(response.data.dateOfBirth));
 					$('#addModal #addNewForm input[name="email"]').val(response.data.email);
+					$('#addModal #addNewForm input[name="mobile"]').val(response.data.mobile);
 					$('#addModal #addNewForm input[name="password"]').val(response.data.password);
 					$('#addModal #addNewForm input[name="licensePicURL"]').val(response.data.licensePicURL);
 					$('#addModal #addNewForm input[name="picUrl"]').val(response.data.picUrl);
-
-					// $('.kt-avatar__holder').css('background-image', 'url(' + res.data.picUrl + ')');
-
 					$('#licensePicURL .kt-avatar__holder').css('background-image', 'url(' + response.data.licensePicURL + ')');
 					$('#picURL .kt-avatar__holder').css('background-image', 'url(' + response.data.picUrl + ')');
 					$('#addModal #addNewForm #employee').prop('checked', response.data.isEmployee)
 					$('#addModal #addNewForm input[name="id"]').val(response.data.id);
 					// swal.fire("Doneosdflsdfsodfjo!", "It was succesfully deleted!", "success");
 					// datatable.reload();
-
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
 					swal.fire("Error !", "Please try again", "error");
 				}
 			})
-
 		});
+
 		$('#update').click(function (e) {
 			e.preventDefault();
-
-
 			var btn = $(this);
 			var form = $('#addNewForm');
 			form.validate({
@@ -322,7 +321,6 @@ var driversDT = function () {
 			if (!form.valid()) {
 				return;
 			}
-
 
 			var formData = $('#addNewForm').extractObject();
 
