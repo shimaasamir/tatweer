@@ -15,7 +15,41 @@ var tripsDT = function () {
 	$('.dateRange').daterangepicker({
 		buttonClasses: ' btn',
 		applyClass: 'btn-primary',
-		cancelClass: 'btn-secondary'
+		cancelClass: 'btn-secondary',
+		locale: {
+			"format": "MM/DD/YYYY",
+			"separator": " - ",
+			"applyLabel": "Apply",
+			"cancelLabel": "Cancel",
+			"fromLabel": "From",
+			"toLabel": "To",
+			"customRangeLabel": "Custom",
+			"daysOfWeek": [
+				"Su",
+				"Mo",
+				"Tu",
+				"We",
+				"Th",
+				"Fr",
+				"Sa"
+			],
+			"monthNames": [
+				"January",
+				"February",
+				"March",
+				"April",
+				"May",
+				"June",
+				"July",
+				"August",
+				"September",
+				"October",
+				"November",
+				"December"
+			],
+			"firstDay": 1
+		}
+
 	}, function (start, end, label) {
 		$('.dateRange').val(start.format('YYYY-MM-DD') + ' / ' + end.format('YYYY-MM-DD'));
 		$('.formDate').val(start.format('YYYY-MM-DD'));
