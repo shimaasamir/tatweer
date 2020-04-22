@@ -117,7 +117,7 @@ var clientsDT = function () {
 			// console.log(e.currentTarget.dataset.id);
 			$(".modal-title").text("View Client");
 			$('#addModal #addNewForm input').prop("disabled", true);
-			$('#addModal #addNew').hide();
+			$('#addModal #addNew,.kt-avatar__upload').hide();
 
 			$.ajax({
 				url: "http://tatweer-api.ngrok.io/api/Client/GetClient/" + id,
@@ -155,6 +155,7 @@ var clientsDT = function () {
 			let viewForm = $('#addModal #addNewForm')
 			viewForm.each(function () {
 				this.reset();
+				$("#addModal #addNewForm input:hidden").val(' ');
 			});
 
 		});

@@ -127,7 +127,7 @@ var vehiclesDT = function () {
 			// console.log(e.currentTarget.dataset.id);
 			$(".modal-title").text("View Vehicle");
 			$('#addModal #addNewForm input').prop("disabled", true);
-			$('#addModal #addNew').hide();
+			$('#addModal #addNew,.kt-avatar__upload').hide();
 			$('#addModal #update').hide();
 
 			$.ajax({
@@ -164,12 +164,16 @@ var vehiclesDT = function () {
 		$('body').on('click', '#showAddNewModal', function (e) {
 			$(".modal-title").text("Add Vehicle");
 			$('#addModal #addNewForm input').prop("disabled", false);
-			$('#addModal #addNew').show();
+			$('#addModal #addNew,.kt-avatar__upload').show();
 			$('#addModal #update').hide();
 			$('#addModal').modal('show');
+			$('.kt-avatar').removeClass('kt-avatar--changed');
 			let viewForm = $('#addModal #addNewForm')
+
 			viewForm.each(function () {
 				this.reset();
+				$("#addModal #addNewForm input:hidden").val(' ');
+
 			});
 
 		});
@@ -180,7 +184,7 @@ var vehiclesDT = function () {
 			$(".modal-title").text("Edit Vehicle");
 			$('#addModal #addNewForm input').prop("disabled", false);
 			$('#addModal #addNew').hide();
-			$('#addModal #update').show();
+			$('#addModal #update,.kt-avatar__upload').show();
 
 			$.ajax({
 				url: "http://tatweer-api.ngrok.io/api/Vehicle/GetVehicle/" + id,
@@ -192,6 +196,7 @@ var vehiclesDT = function () {
 				success: function (response) {
 					console.log(response)
 					$('#addModal').modal('show');
+
 					// console.log(viewForm)
 					$('#addModal #addNewForm input[name="brand"]').val(response.data.brand);
 					$('#addModal #addNewForm input[name="model"]').val(response.data.model);
@@ -206,6 +211,11 @@ var vehiclesDT = function () {
 					$('#addModal #addNewForm input[name="id"]').val(response.data.id);
 					// swal.fire("Doneosdflsdfsodfjo!", "It was succesfully deleted!", "success");
 					// datatable.ajax.reload();
+					if (response.data.vehicleLicense != null && response.data.vehicleLicense != "" && response.data.vehicleLicense != " ") {
+						$('#vehicleLic.kt-avatar').addClass('kt-avatar--changed');
+					} else {
+						$('#vehicleLic.kt-avatar').removeClass('kt-avatar--changed');
+					}
 
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
@@ -214,6 +224,11 @@ var vehiclesDT = function () {
 			})
 
 		});
+
+		$('#vehicleLic .kt-avatar__cancel').click(function () {
+			$('#addModal #addNewForm input[name="vehicleLicense"]').val("");
+		});
+
 		$('#asset').change(function () {
 			// if($(this).is(":checked")) {
 			// 	// var returnVal = confirm("Are you sure?");

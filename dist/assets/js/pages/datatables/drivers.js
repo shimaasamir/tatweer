@@ -16,6 +16,16 @@ var driversDT = function () {
 	// basic demo
 	var datatable;
 	var drivers = function () {
+		$('#removeLicensePicURL').click(function (e) {
+			// $('#licensePicURL .kt-avatar__cancel').click(function () {
+			$('#addModal #addNewForm input[name="licensePicURL"]').val("");
+		});
+
+		// $('body').on('click', '#picURL .kt-avatar__cancel', function (e) {
+
+		$('#removePicURL').click(function () {
+			$('#addModal #addNewForm input[name="picUrl"]').val("");
+		});
 		if (datatable) datatable.destroy();
 		datatable = _dt.bindDataTable('#dataTable', [0, 1, 2, 3, 4, 5, 6],
 			function (data, a, b, c) {
@@ -119,7 +129,8 @@ var driversDT = function () {
 			// console.log(e.currentTarget.dataset.id);
 			$(".modal-title").text("View Driver");
 			$('#addModal #addNewForm input').prop("disabled", true);
-			$('#addModal #addNew').hide();
+
+			$('#addModal #addNew,#addModal #update,.kt-avatar__upload').hide();
 
 			$.ajax({
 				url: "http://tatweer-api.ngrok.io/api/Driver/GetDriver/" + id,
@@ -161,13 +172,16 @@ var driversDT = function () {
 			;
 			$(".modal-title").text("Add Driver");
 			$('#addModal #addNewForm input').prop("disabled", false);
-			$('#addModal #addNew').show();
+			$('#addModal #addNew,.kt-avatar__upload').show();
 			$('#addModal #update').hide();
 			$('#addModal').modal('show');
+			$('.kt-avatar').removeClass('kt-avatar--changed');
 
 			let viewForm = $('#addModal #addNewForm')
 			viewForm.each(function () {
 				this.reset();
+				$("#addModal #addNewForm input:hidden").val(' ');
+
 			});
 
 		});
@@ -254,13 +268,11 @@ var driversDT = function () {
 		$('body').on('click', 'a.edit', function (e) {
 			let id = e.currentTarget.dataset.id;
 			let viewForm = $('#addModal #addNewForm')
-				// console.log(e.currentTarget.dataset.id);
-				;
 
 			$(".modal-title").text("Edit Driver");
 			$('#addModal #addNewForm input').prop("disabled", false);
 			$('#addModal #addNew').hide();
-			$('#addModal #update').show();
+			$('#addModal #update,.kt-avatar__upload').show();
 
 			$.ajax({
 				url: "http://tatweer-api.ngrok.io/api/Driver/GetDriver/" + id,
@@ -284,6 +296,17 @@ var driversDT = function () {
 					$('#picURL .kt-avatar__holder').css('background-image', 'url(' + response.data.picUrl + ')');
 					$('#addModal #addNewForm #employee').prop('checked', response.data.isEmployee)
 					$('#addModal #addNewForm input[name="id"]').val(response.data.id);
+					if (response.data.licensePicURL != null && response.data.licensePicURL != '' && response.data.licensePicURL != ' ') {
+						$('#licensePicURL.kt-avatar').addClass('kt-avatar--changed');
+					} else {
+						$('#licensePicURL.kt-avatar').removeClass('kt-avatar--changed');
+					}
+
+					if (response.data.picUrl != null && response.data.picUrl != ' ' && response.data.picUrl != '') {
+						$('#picURL.kt-avatar').addClass('kt-avatar--changed');
+					} else {
+						$('#picURL.kt-avatar').removeClass('kt-avatar--changed');
+					}
 					// swal.fire("Doneosdflsdfsodfjo!", "It was succesfully deleted!", "success");
 					// datatable.reload();
 				},
@@ -292,6 +315,8 @@ var driversDT = function () {
 				}
 			})
 		});
+		// $('body').on('click', '#removeLicensePicURL', function (e) {
+
 
 		$('#update').click(function (e) {
 			e.preventDefault();

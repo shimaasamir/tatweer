@@ -66,6 +66,7 @@ $('.modal').on('hidden.bs.modal', function () {
     $('.kt-avatar__holder').css('background-image', '');
     console.log("object")
 })
+
 // 
 var loadAllRoles = function () {
     roles = [];

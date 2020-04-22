@@ -101,7 +101,7 @@ var KTLoginGeneral = function () {
                             success: function (response) {
                                 $.cookie("user", JSON.stringify(response.data));
 
-                                window.location.href = "vehicles.html"
+                                window.location.href = "dashboard.html"
                                 console.log(response)
 
                             },

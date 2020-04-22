@@ -165,6 +165,7 @@ var tripsDT = function () {
 			// let viewForm = $('#addModal #addNewForm')
 			form.each(function () {
 				this.reset();
+				$("#addModal #addNewForm input:hidden").val(' ');
 			});
 			form.validate({
 				rules: {

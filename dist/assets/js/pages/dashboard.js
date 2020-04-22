@@ -2218,7 +2218,7 @@ var KTDashboard = function () {
                     },
                 }, {
                     field: 'tripDateTime',
-                    title: 'Trip Date Time',
+                    title: 'Trip Date & Time',
                     type: 'date',
                     format: 'MM/DD/YYYY hh:mm',
                     template: function (row) {
