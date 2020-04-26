@@ -137,10 +137,10 @@ var tripsDT = function () {
 					console.log(res)
 					$('#addModal').modal('show');
 
-					$('#addModal #addNewForm input[name="routeName"]').val(res.data.routeName);
+					$('#addModal #addNewForm input[name="routeName"]').val(res.data.route.routeName);
 					$('#addModal #addNewForm input[name="passengersCount"]').val(res.data.passenger.length);
-					$('#addModal #addNewForm input[name="tripDate"]').val(formatDate(res.data.tripDate));
-					$('#addModal #addNewForm input[name="startTime"]').val(getTime(res.data.startTime));
+					$('#addModal #addNewForm input[name="tripDate"]').val(formatDate(res.data.startDateTime));
+					$('#addModal #addNewForm input[name="startTime"]').val(getTime(res.data.startDateTime));
 					$('#addModal #addNewForm input[name="id"]').val(res.data.id);
 					$('#vehicles').val(res.data.vehicleID);
 					$('#vehicles').trigger('change');
