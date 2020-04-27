@@ -172,7 +172,7 @@ var vehiclesDT = function () {
 
 			viewForm.each(function () {
 				this.reset();
-				$("#addModal #addNewForm input:hidden").val(' ');
+				$("#addModal #addNewForm input:hidden").val('');
 
 			});
 

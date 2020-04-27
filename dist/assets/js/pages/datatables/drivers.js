@@ -180,7 +180,7 @@ var driversDT = function () {
 			let viewForm = $('#addModal #addNewForm')
 			viewForm.each(function () {
 				this.reset();
-				$("#addModal #addNewForm input:hidden").val(' ');
+				$("#addModal #addNewForm input:hidden").val('');
 
 			});
 
@@ -268,11 +268,11 @@ var driversDT = function () {
 		$('body').on('click', 'a.edit', function (e) {
 			let id = e.currentTarget.dataset.id;
 			let viewForm = $('#addModal #addNewForm')
-
 			$(".modal-title").text("Edit Driver");
 			$('#addModal #addNewForm input').prop("disabled", false);
 			$('#addModal #addNew').hide();
 			$('#addModal #update,.kt-avatar__upload').show();
+			$('#addModal input[name="email"]').attr('disabled', true);
 
 			$.ajax({
 				url: "http://tatweer-api.ngrok.io/api/Driver/GetDriver/" + id,

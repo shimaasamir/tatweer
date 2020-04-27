@@ -182,7 +182,7 @@ var checkPointsDT = function () {
 			let viewForm = $('#addModal #addNewForm')
 			viewForm.each(function () {
 				this.reset();
-				$("#addModal #addNewForm input:hidden").val(' ');
+				$("#addModal #addNewForm input:hidden").val('');
 			});
 
 		});

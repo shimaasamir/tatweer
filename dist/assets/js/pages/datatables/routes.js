@@ -131,18 +131,12 @@ var routesDT = function () {
 			form.validate({
 				rules: {
 					routeName: {
-						required: true
+						required: true,
 					},
-					startLatitude: {
-						required: true
+					startName: {
+						required: true,
 					},
-					startLongitude: {
-						required: true
-					},
-					endLatitude: {
-						required: true
-					},
-					endLongitude: {
+					endName: {
 						required: true
 					},
 					clientId: {
@@ -156,6 +150,9 @@ var routesDT = function () {
 						required: true,
 						number: true
 					}
+
+
+
 				}
 			});
 			if (!form.valid()) {
@@ -283,7 +280,7 @@ var routesDT = function () {
 			let viewForm = $('#addModal #addNewForm')
 			viewForm.each(function () {
 				this.reset();
-				$("#addModal #addNewForm input:hidden").val(' ');
+				$("#addModal #addNewForm input:hidden").val('');
 			});
 
 
@@ -291,24 +288,18 @@ var routesDT = function () {
 		});
 		// add new
 		$('#addNew').click(function (e) {
-			e.preventDefault();
+
 			var btn = $(this);
 			var form = $('#addNewForm');
 			form.validate({
 				rules: {
 					routeName: {
-						required: true
+						required: true,
 					},
-					startLatitude: {
-						required: true
+					startName: {
+						required: true,
 					},
-					startLongitude: {
-						required: true
-					},
-					endLatitude: {
-						required: true
-					},
-					endLongitude: {
+					endName: {
 						required: true
 					},
 					clientId: {
@@ -327,12 +318,10 @@ var routesDT = function () {
 
 				}
 			});
-
 			if (!form.valid()) {
 				return;
 			}
 			var formData = $('#addNewForm').extractObject();
-
 			delete formData.id;
 			console.log(formData);
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);

@@ -135,7 +135,7 @@ var clientsDT = function () {
 					$('#addModal #addNewForm input[name="email"]').val(response.data.email);
 					$('#addModal #addNewForm input[name="mobile"]').val(response.data.mobile);
 					$('#addModal #addNewForm input[name="fax"]').val(response.data.fax);
-					$('#addModal #addNewForm input[name="lastUpdateTime"]').val(response.data.fax);
+					$('#addModal #addNewForm input[name="lastUpdateTime"]').val(response.data.lastUpdateTime);
 					// datatable.ajax.reload();
 
 				},
@@ -155,7 +155,7 @@ var clientsDT = function () {
 			let viewForm = $('#addModal #addNewForm')
 			viewForm.each(function () {
 				this.reset();
-				$("#addModal #addNewForm input:hidden").val(' ');
+				$("#addModal #addNewForm input:hidden").val('');
 			});
 
 		});
@@ -239,7 +239,7 @@ var clientsDT = function () {
 			$('#addModal #addNewForm input').prop("disabled", false);
 			$('#addModal #addNew').hide();
 			$('#addModal #update').show();
-
+			$('#addModal input[name="email"]').attr('disabled', true);
 			$.ajax({
 				url: "http://tatweer-api.ngrok.io/api/Client/GetClient/" + id,
 				type: "GET",

@@ -42,83 +42,84 @@ var tripsDT = function () {
 	//end--convert form to json
 	// basic demo
 	var datatable = $('#dataTable').DataTable();
-	$('.tableContainer').hide()
+	var initTable = function (clientID) {
+		if (datatable) datatable.destroy();
+		datatable = _dt.bindDataTable('#dataTable', [0, 1, 2, 3, 4, 5, 6],
+			function (data, a, b, c) {
+				// console.log(a)
+				// console.log(b.route.routeName)
+				makeTimer(b.tripDateTime, b.id);
+				// countDown(b.tripDateTime, b.id)
+				if (c.col == 1) {
+					return b.route.routeName;
+				}
+				if (c.col == 2) {
+					return b.route.start.name;
+				}
+				if (c.col == 3) {
+					return b.route.end.name;
+				}
+				if (c.col == 4) {
+					return formatDate(b.tripDateTime);
+				}
+				if (c.col == 5) {
+					return '<div id="' + b.id + '"></div>'
+				}
+				if (c.col == 6) {
+					return '\
+						<a href="javascript:;" data-id="' + b.id + '" class="btn btn-sm btn-clean btn-icon btn-icon-sm assign"  title="Confirm Trip">\
+								<i class="fas fa-tasks">\</i>\
+							</a>\
+					';
+				}
+
+				return data;
+			},
+			'http://tatweer-api.ngrok.io/api/Trip/GetAllTripsPaging', 'POST', {
+			pagenumber: 1,
+			pageSize: 10,
+			clientId: clientID,
+			statusId: 0
+		},
+			[{
+				"data": "id"
+			},
+			{
+				"data": "routeName"
+			},
+			{
+				"data": "startName"
+			},
+			{
+				"data": "endName"
+			},
+			{
+				"data": "tripDateTime"
+			},
+			{
+				data: 'Actions',
+				responsivePriority: -1
+			}
+			]);
+	}
+
 	var trips = function () {
 		// load trips based on client
+		initTable(0)
 		$('#clients').on('select2:select', function (e) {
 			// console.log(e)
 			var clientID = $(this).val();
+			$.cookie("selected_ClientID", clientID);
+			// console.log($.cookie("selected_ClientID"))
 			// console.log($(this).val())
 			// var table = $('#kt_table_1');
-			$('.tableContainer').show();
-
-			if (datatable) datatable.destroy();
-			datatable = _dt.bindDataTable('#dataTable', [0, 1, 2, 3, 4, 5, 6],
-				function (data, a, b, c) {
-					// console.log(a)
-					// console.log(b.route.routeName)
-					makeTimer(b.tripDateTime, b.id);
-					// countDown(b.tripDateTime, b.id)
-					if (c.col == 1) {
-						return b.route.routeName;
-					}
-					if (c.col == 2) {
-						return b.route.start.name;
-					}
-					if (c.col == 3) {
-						return b.route.end.name;
-					}
-					if (c.col == 4) {
-						return formatDate(b.tripDateTime);
-					}
-					if (c.col == 5) {
-						return '<div id="' + b.id + '"></div>'
-					}
-					if (c.col == 6) {
-						return '\
-								<a href="javascript:;" data-id="' + b.id + '" class="btn btn-sm btn-clean btn-icon btn-icon-sm assign"  title="Confirm Trip">\
-										<i class="fas fa-tasks">\</i>\
-									</a>\
-							';
-					}
-
-					return data;
-				},
-				'http://tatweer-api.ngrok.io/api/Trip/GetAllTripsPaging', 'POST', {
-				pagenumber: 1,
-				pageSize: 10,
-				clientId: clientID,
-				statusId: 0
-			},
-				[{
-					"data": "id"
-				},
-				{
-					"data": "routeName"
-				},
-				{
-					"data": "startName"
-				},
-				{
-					"data": "endName"
-				},
-				{
-					"data": "tripDateTime"
-				},
-				{
-					data: 'Actions',
-					responsivePriority: -1
-				}
-				]);
-
+			initTable(clientID)
 
 		});
 
 		$('body').on('click', 'a.assign', function (e) {
 			let id = e.currentTarget.dataset.id;
-			// let viewForm = $('#addModal #addNewForm')
-			// console.log(e.currentTarget.dataset.id);
-			// $(".modal-title").text("View Trip");
+
 			$('#addModal #addNewForm input').prop("disabled", true);
 
 			// $('#addModal #addNew,#addModal #update').hide();
@@ -157,15 +158,15 @@ var tripsDT = function () {
 
 		});
 		$('#update').click(function (e) {
-			let id = e.currentTarget.dataset.id;
-
+			let id = $('#addModal #addNewForm input[name="id"]').val();;
+			console.log(id)
 			// e.preventDefault();
 			var btn = $(this);
 			var form = $('#addNewForm');
 			// let viewForm = $('#addModal #addNewForm')
 			form.each(function () {
 				this.reset();
-				$("#addModal #addNewForm input:hidden").val(' ');
+				$("#addModal #addNewForm input:hidden").val('');
 			});
 			form.validate({
 				rules: {
@@ -182,7 +183,7 @@ var tripsDT = function () {
 				return;
 			}
 			if (!$("#vehicles").val() || !$("#drivers").val()) {
-				showErrorMsg(form, 'danger', "please assign deriver and vehicle");
+				showErrorMsg(form, 'danger', "please assign Driver and Vehicle");
 				return;
 			}
 			// console.log("ids", c)
@@ -191,6 +192,7 @@ var tripsDT = function () {
 				vehicleID: $("#vehicles").val(),
 				driverId: $("#drivers").val()
 			}
+			console.log(submitdata)
 			btn.addClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', true);
 			form.ajaxSubmit({
 				url: "http://tatweer-api.ngrok.io/api/Trip/confirm",
@@ -205,7 +207,7 @@ var tripsDT = function () {
 					btn.removeClass('kt-spinner kt-spinner--right kt-spinner--sm kt-spinner--light').attr('disabled', false);
 					console.log(response);
 					$('#addModal').modal('hide');
-					datatable.ajax.reload()
+					initTable($.cookie("selected_ClientID"))
 				},
 				error: function (res) {
 					console.log(response);
